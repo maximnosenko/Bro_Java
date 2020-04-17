@@ -32,6 +32,8 @@ public class Habitat {
     private boolean bol=false;
     private boolean go=false;
     private JMenuBar menuBar=new JMenuBar();
+    private ConcreteFactory obj1 = new ConcreteFactory();
+
 
     public Habitat() {
 
@@ -165,13 +167,13 @@ public class Habitat {
         startButton.setBounds(5,5,80,30);
         stopButton.setBounds(90,5,80,30);
 
-        JButton currentObj=new JButton("Current obj");
+        final JButton currentObj=new JButton("Current obj");
         currentObj.setFocusable(false);
         currentObj.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                getCurrentObj();
                 pause(currentTime);
+                getCurrentObj();
                 currentObj.requestFocus();
             }
         });
@@ -287,7 +289,7 @@ public class Habitat {
 
     public void Texti()
     {
-        TextField text=new TextField("400");
+        final TextField text=new TextField("400");
         text.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -314,7 +316,7 @@ public class Habitat {
         panelTwo.add(text);
 
 
-        TextField textTwo=new TextField("500");
+        final TextField textTwo=new TextField("500");
         textTwo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -341,7 +343,7 @@ public class Habitat {
         panelTwo.add(label);
         panelTwo.add(textTwo);
 
-        TextField LifeTextRabbit = new TextField();
+        final TextField LifeTextRabbit = new TextField();
         LifeTextRabbit.setText("100");
         LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
@@ -366,7 +368,7 @@ public class Habitat {
         panelTwo.add(LifeTextRabbit);
         LifeTextRabbit.setBounds(70,260,120,20);
 
-        TextField LifeTextAlbino=new TextField("1000");
+        final TextField LifeTextAlbino=new TextField("1000");
         LifeTextAlbino.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -568,10 +570,15 @@ public class Habitat {
             });
             setTitle("Window");
             TextArea text=new TextArea(5,30);
-            text.setText("Current Object "+obj.GetMap().size());
+            String data = "Living objects: "+obj.GetMap().size()+'\n';
+            data += "ID\tBirth time\n";
+            for (Map.Entry entry : (Set<Map.Entry>)obj.GetMap().entrySet()) {
+                data += entry.getValue().toString() + '\t' + entry.getKey() + '\n';
+            }
+            text.setText(data);
             text.setFont(new Font("Window", Font.BOLD, 14));
-            text.setEnabled(false);
-            text.setBackground(Color.BLACK);
+            //text.setEnabled(false);
+            //text.setBackground(Color.BLACK);
             JPanel contein=new JPanel();
             contein.add(button);
             contein.add(text);
@@ -579,6 +586,7 @@ public class Habitat {
             setSize(350,200);
             setLocationRelativeTo(null);
             setVisible(true);
+            text.setEditable(false);
             requestFocus();
         }
     }
@@ -636,7 +644,6 @@ public class Habitat {
             }
         }
         Random r=new Random();
-        ConcreteFactory obj1 = new ConcreteFactory();
         if(elapseTime%N1==0 && r.nextInt(1)<P1) {
             obj1.createRabbit(currentTime);
             NumberRabbits++;
