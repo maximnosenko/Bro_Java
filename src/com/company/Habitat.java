@@ -3,7 +3,6 @@ package com.company;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.sql.RowIdLifetime;
 import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
@@ -23,14 +22,15 @@ public class Habitat {
     private JPanel panel,panelTwo;
     private double N1=400;
     private double N2=500;
-    private int lifeTimeRabbit;
-    private int lifeTimeAlbino;
+    private int lifeTimeRabbit=100;
+    private int lifeTimeAlbino=1000;
     private long createRab=0;
     private long createAlb=0;
     private float k= (float) 0.1;
     private double P1=0.3;
     private long to=0;
     private boolean bol=false;
+    private boolean go=false;
     private JMenuBar menuBar=new JMenuBar();
 
     public Habitat() {
@@ -90,12 +90,12 @@ public class Habitat {
                 else {
 
                     if (simulate) {
-                        for (int i = 0; i < obj.GetVector().size(); i++) {
-                                try {
-                                    g.drawImage(obj.GetVector().get(i).getImage(), obj.GetVector().get(i).getX(), obj.GetVector().get(i).getY(), null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                        for (int i = 0; i < obj.GetMap().size(); i++) {
+                            try {
+                                g.drawImage(obj.GetVector().get(i).getImage(), obj.GetVector().get(i).getX(), obj.GetVector().get(i).getY(), null);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                         }
                         if (ShowTime) {
@@ -170,10 +170,12 @@ public class Habitat {
         currentObj.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new currentObject();
+                getCurrentObj();
                 pause(currentTime);
+                currentObj.requestFocus();
             }
         });
+
         panelTwo.add(currentObj);
         currentObj.setBounds(5,340,130,30);
     }
@@ -190,14 +192,12 @@ public class Habitat {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
                 ShowTime=true;
-                frame.repaint();
             }
         });
         off.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
                 ShowTime=false;
-                frame.repaint();
             }
         });
         on.setBounds(5,40,90,30);
@@ -299,7 +299,7 @@ public class Habitat {
                         System.out.println(N1);
                     }
                     catch (NumberFormatException eg) {
-                        new WindowText();
+                        getWindowText();
                         N1 = 400;
                     }
                     finally {
@@ -326,7 +326,7 @@ public class Habitat {
                     }
                     catch (NumberFormatException eg)
                     {
-                        new WindowText();
+                        getWindowText();
                         N2=500;
                     }
                     finally {
@@ -341,7 +341,8 @@ public class Habitat {
         panelTwo.add(label);
         panelTwo.add(textTwo);
 
-        TextField LifeTextRabbit = new TextField("700");
+        TextField LifeTextRabbit = new TextField();
+        LifeTextRabbit.setText("100");
         LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -350,8 +351,8 @@ public class Habitat {
                     try{
                         lifeTimeRabbit=Integer.parseInt(LifeTextRabbit.getText());
                     }catch (NumberFormatException ex){
-                        new WindowText();
-                        lifeTimeRabbit =700;
+                        getWindowText();
+                      lifeTimeRabbit =100;
                     }
                     finally {
                         frame.requestFocus();
@@ -365,7 +366,7 @@ public class Habitat {
         panelTwo.add(LifeTextRabbit);
         LifeTextRabbit.setBounds(70,260,120,20);
 
-        TextField LifeTextAlbino=new TextField("400");
+        TextField LifeTextAlbino=new TextField("1000");
         LifeTextAlbino.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -375,8 +376,8 @@ public class Habitat {
                     try{
                         lifeTimeAlbino=Integer.parseInt(LifeTextAlbino.getText());
                     }catch (NumberFormatException ex){
-                        new WindowText();
-                        lifeTimeAlbino=400;
+                        getWindowText();
+                       lifeTimeAlbino=1000;
                     }
                     finally {
                         frame.requestFocus();
@@ -391,64 +392,138 @@ public class Habitat {
         LifeTextAlbino.setBounds(70,300,120,20);
     }
 
-public void Meniu()
-{
-    JMenu Menu=new JMenu("Menu");
-    JMenuItem StopMenu=new JMenuItem("Stop");
-    JMenuItem StarMenu=new JMenuItem("Start");
-    JRadioButtonMenuItem one=new JRadioButtonMenuItem("on");
-    JRadioButtonMenuItem two=new JRadioButtonMenuItem("off");
-    Menu.add(StarMenu);
-    Menu.add(StopMenu);
-    Menu.add(one);
-    Menu.add(two);
+    public void Meniu()
+    {
+        JMenu Menu=new JMenu("Menu");
+        JMenuItem StopMenu=new JMenuItem("Stop");
+        JMenuItem StarMenu=new JMenuItem("Start");
+        JRadioButtonMenuItem one=new JRadioButtonMenuItem("on");
+        JRadioButtonMenuItem two=new JRadioButtonMenuItem("off");
+        Menu.add(StarMenu);
+        Menu.add(StopMenu);
+        Menu.add(one);
+        Menu.add(two);
 
-    StarMenu.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            if(!simulate)
-                Start();
-        }
-    });
-    StopMenu.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            Stop();
-        }
-    });
-    one.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            ShowTime=true;
-            frame.repaint();
-        }
-    });
-    two.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            ShowTime=false;
-            frame.repaint();
-        }
-    });
-    Menu.setFocusable(false);
-    menuBar.setFocusable(false);
-    menuBar.add(Menu);
-}
+        StarMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(!simulate)
+                    Start();
+            }
+        });
+        StopMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Stop();
+            }
+        });
+        one.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ShowTime=true;
+                frame.repaint();
+            }
+        });
+        two.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ShowTime=false;
+                frame.repaint();
+            }
+        });
+        Menu.setFocusable(false);
+        menuBar.setFocusable(false);
+        menuBar.add(Menu);
+    }
 
-   public class Message extends JDialog
+    private class Updater extends TimerTask{
+        private Habitat mHabitat;
+        private boolean FirstRun=true;
+        public Updater(Habitat habitat)
+        {
+            mHabitat=habitat;
+        }
+
+        public Updater(ActionListener actionListener) {
+        }
+        @Override
+        public void run() {
+            currentTime +=100;
+            mHabitat.Update(currentTime);
+        }
+    }
+
+    public void pause(long t)
+    {
+        currentTime=t;
+        obj=Singleton.getInstance();
+        mTimer.cancel();
+        mTimer=new Timer();
+    }
+
+    public void resume(long t)
+    {
+        simulate=true;
+        mTimer.cancel();
+        mTimer=new Timer();
+        currentTime=t;
+        mTimer.schedule(new Updater(this),0,100);
+        frame.repaint();
+    }
+
+    public void Start()
+    {
+        if (JustStart)
+            JustStart = false;
+        mTimer.cancel();
+        obj.refreshMap();
+        obj.refreshID();
+        obj.refreshVector();
+        mTimer=new Timer();
+        NumberRabbits=0;
+        currentTime=0;
+        CommonRabbit=0;
+        NumberAlbino=0;
+        simulate=true;
+        go=true;
+        mTimer.schedule(new Updater(this),0,100);
+    }
+
+    public void Stop()
+    {
+        mTimer.cancel();
+        if(bol&&simulate)
+            getMessage();
+        go=false;
+        simulate=false;
+        frame.repaint();
+
+    }
+    public void getMessage(){
+        new Message();
+    }
+    public void getCurrentObj(){
+        new currentObject();
+    }
+    public void getWindowText()
+    {
+        new WindowText();
+    }
+    public class Message extends JDialog
     {
 
         public Message() {
             JButton button1 = new JButton("OK");
+            button1.setFocusable(false);
             button1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    Stop();
                     dispose();
                     requestFocus();
                 }
             });
             setTitle("Info");
             JButton button2 = new JButton("cancellation");
+            button2.setFocusable(false);
             button2.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     resume(to);
@@ -470,7 +545,7 @@ public void Meniu()
             setLocationRelativeTo(null);
             setVisible(true);
             requestFocus();
-            }
+        }
     }
 
     public class currentObject extends JDialog
@@ -479,11 +554,16 @@ public void Meniu()
         {
             JButton button=new JButton("OK");
             button.setFocusable(false);
+//System.out.println(obj.GetMap().entrySet());
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    dispose();
-                    resume(currentTime);
+                    if(go) {
+                        resume(currentTime);
+                        dispose();
+                    }
+                    else
+                        dispose();
                 }
             });
             setTitle("Window");
@@ -496,7 +576,6 @@ public void Meniu()
             contein.add(button);
             contein.add(text);
             setContentPane(contein);
-            frame.requestFocus();
             setSize(350,200);
             setLocationRelativeTo(null);
             setVisible(true);
@@ -509,10 +588,10 @@ public void Meniu()
         public WindowText() {
 
             JButton button1 = new JButton("OK");
+            button1.setFocusable(false);
             button1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     dispose();
-                    requestFocus();
                 }
             });
             setTitle("Warning");
@@ -526,81 +605,17 @@ public void Meniu()
             contents.add(button1);
             contents.add(textArea1);
             setContentPane(contents);
-            frame.requestFocus();
             setSize(350, 200);
             setLocationRelativeTo(null);
+            frame.requestFocus();
             setVisible(true);
-            requestFocus();
-        }
-    }
-
-
-    private class Updater extends TimerTask{
-        private Habitat mHabitat;
-        private boolean FirstRun=true;
-        public Updater(Habitat habitat)
-        {
-            mHabitat=habitat;
-        }
-
-        public Updater(ActionListener actionListener) {
-        }
-        @Override
-        public void run() {
-                currentTime +=100;
-            mHabitat.Update(currentTime);
 
         }
     }
 
-    public void pause(long t)
-    {
-        currentTime=t;
-        obj=Singleton.getInstance();
-        mTimer.cancel();
-        mTimer=new Timer();
-        frame.repaint();
-    }
-
-    public void resume(long t)
-    {
-        simulate=true;
-        obj=Singleton.getInstance();
-        mTimer.cancel();
-        mTimer=new Timer();
-        currentTime=t;
-        mTimer.schedule(new Updater(this),0,100);
-        frame.repaint();
-    }
-
-    public void Start()
-    {
-        if (JustStart)
-        JustStart = false;
-        mTimer.cancel();
-        obj.refreshMap();
-        obj.refreshID();
-        obj.refreshVector();
-        mTimer=new Timer();
-        NumberRabbits=0;
-        currentTime=0;
-        CommonRabbit=0;
-        NumberAlbino=0;
-        simulate=true;
-        mTimer.schedule(new Updater(this),0,100);
-    }
-
-    public void Stop()
-    {
-        mTimer.cancel();
-        if(bol&&simulate)
-        new Message();
-        simulate=false;
-        frame.repaint();
-    }
     public void Update(double elapseTime)
     {
-        Iterator<Map.Entry<Long,Integer>> iter = obj.GetMap().entrySet().iterator();
+        Iterator<Map.Entry> iter = obj.GetMap().entrySet().iterator();
         Vector<Map.Entry> toRemove = new Vector();
         while (iter.hasNext())
         {

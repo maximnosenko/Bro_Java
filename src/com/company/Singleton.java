@@ -8,7 +8,7 @@ public class Singleton {
     Vector<AbstractRabbit> arr=new Vector();
     private static Singleton instance;
     public TreeSet ID=new TreeSet();
-    HashMap<Long, Integer> map=new HashMap();
+    HashMap map=new HashMap();
     private Singleton(){}
 
     public Vector<AbstractRabbit> GetVector()
@@ -28,7 +28,7 @@ public class Singleton {
         ID.clear();
     }
 
-    public HashMap<Long, Integer> GetMap() {
+    public HashMap GetMap() {
         return map;
     }
 
