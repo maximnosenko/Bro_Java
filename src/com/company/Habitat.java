@@ -3,12 +3,11 @@ package com.company;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.sql.RowIdLifetime;
 import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
 import javax.swing.event.*;
-
-//каждому объект нужен свой номер
 
 public class Habitat {
     private int NumberRabbits=0;
@@ -24,11 +23,8 @@ public class Habitat {
     private JPanel panel,panelTwo;
     private double N1=400;
     private double N2=500;
-    private int life=0;
-    private int lifeTimeRabbit=100;
-    private int lifeTimeAlbino=10000;
-
-//создать heasSet
+    private int lifeTimeRabbit;
+    private int lifeTimeAlbino;
     private long createRab=0;
     private long createAlb=0;
     private float k= (float) 0.1;
@@ -40,7 +36,6 @@ public class Habitat {
     public Habitat() {
 
         Panel();
-        //new Massage();
         panelTwo.setLayout(null);
         frame=new JFrame("Window");
         frame.add(panel,BorderLayout.CENTER);
@@ -128,18 +123,25 @@ public class Habitat {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
                 frame.requestFocus();
             }
         });
 
         panelTwo=new JPanel();
-
         Buttons();
         chekBox();
         listertr();
         KomboBox();
         Texti();
         Meniu();
+        panelTwo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                frame.requestFocus();
+            }
+        });
     }
 
     public void Buttons() {
@@ -152,7 +154,6 @@ public class Habitat {
             public void actionPerformed(ActionEvent e) {
                 if(!simulate)
                     Start();
-                //frame.requestFocus();
             }
         });
         stopButton.addActionListener(new ActionListener() {
@@ -163,7 +164,18 @@ public class Habitat {
         panelTwo.add(stopButton);
         startButton.setBounds(5,5,80,30);
         stopButton.setBounds(90,5,80,30);
-        //frame.requestFocus();
+
+        JButton currentObj=new JButton("Current obj");
+        currentObj.setFocusable(false);
+        currentObj.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new currentObject();
+                pause(currentTime);
+            }
+        });
+        panelTwo.add(currentObj);
+        currentObj.setBounds(5,340,130,30);
     }
 
     public void chekBox() {
@@ -179,16 +191,13 @@ public class Habitat {
             public void itemStateChanged(ItemEvent itemEvent) {
                 ShowTime=true;
                 frame.repaint();
-                //frame.requestFocus();
             }
         });
-
         off.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
                 ShowTime=false;
                 frame.repaint();
-                frame.requestFocus();
             }
         });
         on.setBounds(5,40,90,30);
@@ -202,12 +211,9 @@ public class Habitat {
             public void itemStateChanged(ItemEvent itemEvent) {
                 if(bol) {
                     bol = false;
-                    //frame.requestFocus();
                 }else
                     bol=true;
-                //frame.requestFocus();
             }
-
         });
         boxInformation.setBounds(105,40,90,30);
         boxInformation.setFocusable(false);
@@ -217,7 +223,7 @@ public class Habitat {
 
     public void listertr(){
         JList Present= new JList();
-        Vector<String> obj=new Vector<String>();
+        Vector<String> obj=new Vector();
         obj.add("0%");
         obj.add("10%");
         obj.add("20%");
@@ -236,8 +242,6 @@ public class Habitat {
                 JList l=(JList)listSelectionEvent.getSource();
                 k=(float)l.getSelectedIndex()/10;
                 System.out.println(k);
-                l.setRequestFocusEnabled(false);
-               // frame.requestFocus();
             }
         });
         Present.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -283,7 +287,7 @@ public class Habitat {
 
     public void Texti()
     {
-        final TextField text=new TextField("400");
+        TextField text=new TextField("400");
         text.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -303,7 +307,6 @@ public class Habitat {
                     }
                 }
             }});
-        //text.setFocusable(false);
         JLabel labelRabbit=new JLabel("Time create rabbit");
         labelRabbit.setBounds(70,160,110,20);
         text.setBounds(70,180,120,20);
@@ -311,8 +314,7 @@ public class Habitat {
         panelTwo.add(text);
 
 
-        final TextField textTwo=new TextField("500");
-        //textTwo.setFocusable(false);
+        TextField textTwo=new TextField("500");
         textTwo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -337,14 +339,56 @@ public class Habitat {
         textTwo.setBounds(70,220,120,20);
         label.setBounds(70,200,120,20);
         panelTwo.add(label);
-
         panelTwo.add(textTwo);
-        panelTwo.addMouseListener(new MouseAdapter() {
+
+        TextField LifeTextRabbit = new TextField("700");
+        LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                frame.requestFocus();
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                    try{
+                        lifeTimeRabbit=Integer.parseInt(LifeTextRabbit.getText());
+                    }catch (NumberFormatException ex){
+                        new WindowText();
+                        lifeTimeRabbit =700;
+                    }
+                    finally {
+                        frame.requestFocus();
+                    }
+                }
             }
         });
+        JLabel labelRab=new JLabel("life Time Rabbit");
+        labelRab.setBounds(70,240,120,20);
+        panelTwo.add(labelRab);
+        panelTwo.add(LifeTextRabbit);
+        LifeTextRabbit.setBounds(70,260,120,20);
+
+        TextField LifeTextAlbino=new TextField("400");
+        LifeTextAlbino.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if(e.getKeyCode()==KeyEvent.VK_ENTER)
+                {
+                    try{
+                        lifeTimeAlbino=Integer.parseInt(LifeTextAlbino.getText());
+                    }catch (NumberFormatException ex){
+                        new WindowText();
+                        lifeTimeAlbino=400;
+                    }
+                    finally {
+                        frame.requestFocus();
+                    }
+                }
+            }
+        });
+        JLabel labelAlb=new JLabel("life Time Albino");
+        labelAlb.setBounds(70,280,120,20);
+        panelTwo.add(labelAlb);
+        panelTwo.add(LifeTextAlbino);
+        LifeTextAlbino.setBounds(70,300,120,20);
     }
 
 public void Meniu()
@@ -387,17 +431,17 @@ public void Meniu()
         }
     });
     Menu.setFocusable(false);
+    menuBar.setFocusable(false);
     menuBar.add(Menu);
 }
 
-   public class Massage extends JDialog
+   public class Message extends JDialog
     {
 
-        public Massage() {
+        public Message() {
             JButton button1 = new JButton("OK");
             button1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //симуляци останавливается
                     Stop();
                     dispose();
                     requestFocus();
@@ -406,14 +450,12 @@ public void Meniu()
             setTitle("Info");
             JButton button2 = new JButton("cancellation");
             button2.addActionListener(new ActionListener() {
-                //Продолжается
                 public void actionPerformed(ActionEvent e) {
                     resume(to);
                     dispose();
                     requestFocus();
                 }
             });
-            // Создание панели содержимого с размещением кнопок
             JPanel contents = new JPanel();
             contents.add(button1);
             contents.add(button2);
@@ -425,11 +467,42 @@ public void Meniu()
             textArea.setBackground(Color.BLACK);
             contents.add(textArea);
             setSize(350, 200);
+            setLocationRelativeTo(null);
             setVisible(true);
             requestFocus();
             }
     }
 
+    public class currentObject extends JDialog
+    {
+        public currentObject()
+        {
+            JButton button=new JButton("OK");
+            button.setFocusable(false);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    dispose();
+                    resume(currentTime);
+                }
+            });
+            setTitle("Window");
+            TextArea text=new TextArea(5,30);
+            text.setText("Current Object "+obj.GetMap().size());
+            text.setFont(new Font("Window", Font.BOLD, 14));
+            text.setEnabled(false);
+            text.setBackground(Color.BLACK);
+            JPanel contein=new JPanel();
+            contein.add(button);
+            contein.add(text);
+            setContentPane(contein);
+            frame.requestFocus();
+            setSize(350,200);
+            setLocationRelativeTo(null);
+            setVisible(true);
+            requestFocus();
+        }
+    }
 
     public class WindowText extends JDialog
     {
@@ -455,11 +528,10 @@ public void Meniu()
             setContentPane(contents);
             frame.requestFocus();
             setSize(350, 200);
+            setLocationRelativeTo(null);
             setVisible(true);
             requestFocus();
-
         }
-
     }
 
 
@@ -481,6 +553,15 @@ public void Meniu()
         }
     }
 
+    public void pause(long t)
+    {
+        currentTime=t;
+        obj=Singleton.getInstance();
+        mTimer.cancel();
+        mTimer=new Timer();
+        frame.repaint();
+    }
+
     public void resume(long t)
     {
         simulate=true;
@@ -497,9 +578,9 @@ public void Meniu()
         if (JustStart)
         JustStart = false;
         mTimer.cancel();
+        obj.refreshMap();
+        obj.refreshID();
         obj.refreshVector();
-        obj.refreshBirthTimes();
-        obj.refreshIds();
         mTimer=new Timer();
         NumberRabbits=0;
         currentTime=0;
@@ -513,49 +594,43 @@ public void Meniu()
     {
         mTimer.cancel();
         if(bol&&simulate)
-        new Massage();
+        new Message();
         simulate=false;
         frame.repaint();
     }
-
-
     public void Update(double elapseTime)
     {
-        Iterator<Map.Entry> iter = obj.GetBirthTimes().entrySet().iterator();
+        Iterator<Map.Entry<Long,Integer>> iter = obj.GetMap().entrySet().iterator();
         Vector<Map.Entry> toRemove = new Vector();
         while (iter.hasNext())
         {
             Map.Entry elem = iter.next();
             if (((Integer)elem.getValue() > 0 && (Long)elem.getKey() + lifeTimeRabbit <= currentTime)
-                || ((Integer)elem.getValue() < 0 && (Long)elem.getKey() + lifeTimeAlbino <= currentTime))
+                    || ((Integer)elem.getValue() < 0 && (Long)elem.getKey() + lifeTimeAlbino <= currentTime))
                 toRemove.add(elem);
         }
         for (Map.Entry elem : toRemove)
         {
-            obj.GetBirthTimes().remove(elem.getKey());
-            obj.GetIds().remove(elem.getValue());
+            obj.GetMap().remove(elem.getKey());
+            obj.getID().remove(elem.getValue());
             for (AbstractRabbit rabbit : obj.GetVector()) {
-                if (rabbit.id == elem.getValue()) {
+                if (rabbit.ID ==(Integer)elem.getValue()) {
                     obj.GetVector().remove(rabbit);
                     break;
                 }
             }
         }
-
         Random r=new Random();
         ConcreteFactory obj1 = new ConcreteFactory();
         if(elapseTime%N1==0 && r.nextInt(1)<P1) {
             obj1.createRabbit(currentTime);
-            //createRab+=N1;
             NumberRabbits++;
             CommonRabbit++;
-            //System.out.println(TimeCreateR);
         }
         if(elapseTime%N2==0 && NumberAlbino<=k*NumberRabbits) {
             obj1.createAlbinoRabbit(currentTime);
             NumberRabbits++;
             NumberAlbino++;
-            //System.out.println(TimeCreateAl);
         }
         frame.repaint();
     }
