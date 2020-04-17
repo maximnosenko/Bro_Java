@@ -8,11 +8,11 @@ public class albinoRabbit extends AbstractRabbit {
 
     private BufferedImage image;
 
-    albinoRabbit(int x, int y,long Birth,int newid) {
+    albinoRabbit(int x, int y,long Birth,int ID) {
         this.x=x;
         this.y=y;
         this.BirthTime=Birth;
-        this.id=newid;
+        this.ID=ID;
     }
 
     @Override
@@ -21,8 +21,8 @@ public class albinoRabbit extends AbstractRabbit {
     }
 
     @Override
-    int getId() {
-        return id;
+    int getID() {
+        return ID;
     }
 
     @Override
