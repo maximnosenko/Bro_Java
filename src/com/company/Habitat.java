@@ -22,18 +22,15 @@ public class Habitat {
     private JPanel panel,panelTwo;
     private double N1=400;
     private double N2=500;
-    private int lifeTimeRabbit=100;
-    private int lifeTimeAlbino=1000;
-    private long createRab=0;
-    private long createAlb=0;
+    private int lifeTimeRabbit=1000;
+    private int lifeTimeAlbino=10000;
     private float k= (float) 0.1;
     private double P1=0.3;
     private long to=0;
     private boolean bol=false;
-    private boolean go=false;
+    private boolean go=false;//не дает книпоке currentObj продолжить после остановления симуляции
+    private ConcreteFactory concrete;
     private JMenuBar menuBar=new JMenuBar();
-    private ConcreteFactory obj1 = new ConcreteFactory();
-
 
     public Habitat() {
 
@@ -92,13 +89,12 @@ public class Habitat {
                 else {
 
                     if (simulate) {
-                        for (int i = 0; i < obj.GetMap().size(); i++) {
+                        for (int i = 0; i < obj.GetVector().size(); i++) {
                             try {
                                 g.drawImage(obj.GetVector().get(i).getImage(), obj.GetVector().get(i).getX(), obj.GetVector().get(i).getY(), null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
                         }
                         if (ShowTime) {
                             g.setColor(Color.MAGENTA);
@@ -167,7 +163,7 @@ public class Habitat {
         startButton.setBounds(5,5,80,30);
         stopButton.setBounds(90,5,80,30);
 
-        final JButton currentObj=new JButton("Current obj");
+        JButton currentObj=new JButton("Current obj");
         currentObj.setFocusable(false);
         currentObj.addActionListener(new ActionListener() {
             @Override
@@ -289,7 +285,7 @@ public class Habitat {
 
     public void Texti()
     {
-        final TextField text=new TextField("400");
+        TextField text=new TextField("400");
         text.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -316,7 +312,7 @@ public class Habitat {
         panelTwo.add(text);
 
 
-        final TextField textTwo=new TextField("500");
+        TextField textTwo=new TextField("500");
         textTwo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -343,8 +339,8 @@ public class Habitat {
         panelTwo.add(label);
         panelTwo.add(textTwo);
 
-        final TextField LifeTextRabbit = new TextField();
-        LifeTextRabbit.setText("100");
+        TextField LifeTextRabbit = new TextField();
+        LifeTextRabbit.setText("1000");
         LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -354,7 +350,7 @@ public class Habitat {
                         lifeTimeRabbit=Integer.parseInt(LifeTextRabbit.getText());
                     }catch (NumberFormatException ex){
                         getWindowText();
-                      lifeTimeRabbit =100;
+                      lifeTimeRabbit =1000;
                     }
                     finally {
                         frame.requestFocus();
@@ -368,7 +364,7 @@ public class Habitat {
         panelTwo.add(LifeTextRabbit);
         LifeTextRabbit.setBounds(70,260,120,20);
 
-        final TextField LifeTextAlbino=new TextField("1000");
+        TextField LifeTextAlbino=new TextField("10000");
         LifeTextAlbino.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -379,7 +375,7 @@ public class Habitat {
                         lifeTimeAlbino=Integer.parseInt(LifeTextAlbino.getText());
                     }catch (NumberFormatException ex){
                         getWindowText();
-                       lifeTimeAlbino=1000;
+                       lifeTimeAlbino=10000;
                     }
                     finally {
                         frame.requestFocus();
@@ -458,7 +454,6 @@ public class Habitat {
     public void pause(long t)
     {
         currentTime=t;
-        obj=Singleton.getInstance();
         mTimer.cancel();
         mTimer=new Timer();
     }
@@ -470,11 +465,11 @@ public class Habitat {
         mTimer=new Timer();
         currentTime=t;
         mTimer.schedule(new Updater(this),0,100);
-        frame.repaint();
     }
 
     public void Start()
     {
+        concrete= new ConcreteFactory();
         if (JustStart)
             JustStart = false;
         mTimer.cancel();
@@ -540,7 +535,7 @@ public class Habitat {
             JTextArea textArea=new JTextArea(5,25);
             textArea.setFont(new Font("Window", Font.BOLD, 14));
             textArea.setText("Albino Rabbit "+NumberAlbino+"\n"+"Rabbit "+CommonRabbit+"\n"+"ALL Rabbits "+NumberRabbits+"\n"+"Simulation is running for " + currentTime + "ms");
-            textArea.setEnabled(false);
+            textArea.setEditable(false);
             textArea.setBackground(Color.BLACK);
             contents.add(textArea);
             setSize(350, 200);
@@ -556,15 +551,13 @@ public class Habitat {
         {
             JButton button=new JButton("OK");
             button.setFocusable(false);
-//System.out.println(obj.GetMap().entrySet());
+            System.out.println(obj.GetMap().entrySet());
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(go) {
                         resume(currentTime);
-                        dispose();
                     }
-                    else
                         dispose();
                 }
             });
@@ -577,8 +570,7 @@ public class Habitat {
             }
             text.setText(data);
             text.setFont(new Font("Window", Font.BOLD, 14));
-            //text.setEnabled(false);
-            //text.setBackground(Color.BLACK);
+            text.setEditable(false);
             JPanel contein=new JPanel();
             contein.add(button);
             contein.add(text);
@@ -586,7 +578,6 @@ public class Habitat {
             setSize(350,200);
             setLocationRelativeTo(null);
             setVisible(true);
-            text.setEditable(false);
             requestFocus();
         }
     }
@@ -606,7 +597,7 @@ public class Habitat {
             TextArea textArea1=new TextArea(5,30);
             textArea1.setText("This line can only contain numbers"+"\n"+" click 'OK' to continue");
             textArea1.setFont(new Font("Window", Font.BOLD, 14));
-            textArea1.setEnabled(false);
+            textArea1.setEditable(false);
             textArea1.setForeground(Color.BLACK);
 
             JPanel contents = new JPanel();
@@ -627,12 +618,12 @@ public class Habitat {
         Vector<Map.Entry> toRemove = new Vector();
         while (iter.hasNext())
         {
-            Map.Entry elem = iter.next();
+            Map.Entry elem = iter.next();//время это key,value это ID
             if (((Integer)elem.getValue() > 0 && (Long)elem.getKey() + lifeTimeRabbit <= currentTime)
                     || ((Integer)elem.getValue() < 0 && (Long)elem.getKey() + lifeTimeAlbino <= currentTime))
-                toRemove.add(elem);
+                toRemove.add(elem);//Удаление во всех трех коллекциях
         }
-        for (Map.Entry elem : toRemove)
+        for (Map.Entry elem : toRemove)//has next о
         {
             obj.GetMap().remove(elem.getKey());
             obj.getID().remove(elem.getValue());
@@ -644,13 +635,14 @@ public class Habitat {
             }
         }
         Random r=new Random();
+
         if(elapseTime%N1==0 && r.nextInt(1)<P1) {
-            obj1.createRabbit(currentTime);
+            concrete.createRabbit(currentTime);
             NumberRabbits++;
             CommonRabbit++;
         }
         if(elapseTime%N2==0 && NumberAlbino<=k*NumberRabbits) {
-            obj1.createAlbinoRabbit(currentTime);
+            concrete.createAlbinoRabbit(currentTime);
             NumberRabbits++;
             NumberAlbino++;
         }
