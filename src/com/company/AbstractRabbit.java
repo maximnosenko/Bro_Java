@@ -15,9 +15,11 @@ public abstract class AbstractRabbit implements InBehavior {
     abstract void go();
     abstract void stay();
 
-    AbstractRabbit(int x,int y)
+    AbstractRabbit(int x,int y,long Birth,int ID)
     {
         this.x=x;
         this.y=y;
+        this.BirthTime=Birth;
+        this.ID=ID;
     }
 }
