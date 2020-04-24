@@ -1,29 +1,47 @@
 package com.company;
-
-import java.nio.channels.FileChannel;
-import java.util.Iterator;
-import java.util.Map;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 //1.	Обыкновенные кролики двигаются хаотично со скоростью V. Хаотичность достигается случайной сменой направления движения раз в N секунд.
 public class BaceAICommon extends AbstractBaceAI {
-    Singleton obj=Singleton.getInstance();
+   // Singleton obj=Singleton.getInstance();
+    Habitat habitat;
+    int N=1000;
+    boolean switching=true;
+    boolean SwitchForSw=true;
 
     BaceAICommon() {
-
-        //    System.out.println("Constraction");
-            run();
-       //}
+        singleton=Singleton.getInstance();
+        V=10;
     }
 
     @Override
     public void run() {
         while (going) {
-            System.out.println(obj.GetVector());
-            for (AbstractRabbit rabbit : obj.GetVector()) {
+           // System.out.println(singleton.GetVector());
+            for (AbstractRabbit rabbit : singleton.GetVector()) {
                 if (rabbit.getID() > 0) {
-                    System.out.println("Rabbit go1");
+                    //System.out.println("Rabbit go1");
                     //int w=rabbit.getX()
-                    rabbit.setCoordinates(rabbit.getX() + 100, rabbit.getY() + 100);
+                    Timer timer=new Timer(N, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            if(SwitchForSw)
+                            switching=false;
+                            else
+                                switching=true;
+                        }
+                    });
+                    timer.start();
+                    if(switching) {
+                        rabbit.setCoordinates((int) (rabbit.getX() - Math.random() * V), (int) (rabbit.getY() - Math.random() * V));
+                        SwitchForSw=true;
+                    }
+                    else {
+                        rabbit.setCoordinates((int) (rabbit.getX() + Math.random() * V), (int) (rabbit.getY() + Math.random() * V));
+                        SwitchForSw=false;
+                    }
                 }
             }
             try {

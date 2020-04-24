@@ -18,9 +18,9 @@ public class Habitat {
     private boolean ShowTime=false;
     private boolean simulate=false;
     private boolean JustStart=true;
-    private long currentTime;
+    public long currentTime;
     private JPanel panel,panelTwo;
-    private double N1=400;
+    public double N1=400;
     private double N2=500;
     private int lifeTimeRabbit=1000;
     private int lifeTimeAlbino=10000;

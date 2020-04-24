@@ -16,9 +16,9 @@ public class ConcreteFactory implements abstractFactory {
 
     ConcreteFactory(){
         BaceAICommon baceAICommon=new BaceAICommon();
-        //BaceAIAlbino  baceAIAlbino=new BaceAIAlbino();
-        baceAICommon.start();
-        ///baceAIAlbino.start();
+        BaceAIAlbino  baceAIAlbino=new BaceAIAlbino();
+       new Thread(baceAICommon).start();
+        new Thread(baceAIAlbino).start();
     }
 
     @Override
