@@ -6,28 +6,8 @@ public class ConcreteFactory implements abstractFactory {
     private Singleton obj=Singleton.getInstance();
 
     ConcreteFactory() {
-        AbstractBaceAI AI = new AbstractBaceAI() {
-            @Override
-            public void run() {
-                while (going)
-                {
-                    System.out.println("test");
-                    try {
-                        Thread.sleep(500);
-                    }
-                    catch (InterruptedException e)
-                    {
-                        stopped();
-                    }
-                }
-            }
-
-            @Override
-            public void stopped() {
-                going = false;
-            }
-        };
-        new Thread (AI).start();
+        RabbitAI rabbitAI = new RabbitAI();
+        new Thread (rabbitAI).start();
     }
 
     @Override

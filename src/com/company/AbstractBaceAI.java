@@ -5,6 +5,7 @@ import java.lang.Thread;
 public abstract class AbstractBaceAI implements Runnable {//создание потоков
     boolean going=true;
     Habitat parent;
+    Singleton single;
     AbstractBaceAI(){ }
     abstract public void run();
 
