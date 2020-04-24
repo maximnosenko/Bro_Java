@@ -4,16 +4,11 @@ import java.lang.Thread;
  Класс должен создавать поток, обеспечивающий движения объектов коллекции;*/
 public abstract class AbstractBaceAI extends Thread {//создание потоков
     boolean going=true;
-    AbstractRabbit rabbit;
-    Habitat parent;
-    Thread myThread=new Thread();
-    AbstractBaceAI(Habitat parentObj){
-        parent=parentObj;
-    }
-    public void run()
-    {
 
+    AbstractBaceAI(){
+        //myThread.start();
     }
+    public abstract void run();
     //Thread myThread=new Thread(runnable); в мейне классе, где хочешь(такая активация)
     //myThread.start();
     public abstract void stopped();

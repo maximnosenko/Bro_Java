@@ -16,6 +16,12 @@ public class albinoRabbit extends AbstractRabbit {
     }
 
     @Override
+    void setCoordinates(int x,int y) {
+        this.x=x;
+        this.y=y;
+    }
+
+    @Override
     long getTimeBirth() {
         return BirthTime;
     }
@@ -23,16 +29,6 @@ public class albinoRabbit extends AbstractRabbit {
     @Override
     int getID() {
         return ID;
-    }
-
-    @Override
-    void go() {
-        System.out.println("Кролик альбинос идет");
-    }
-
-    @Override
-    void stay() {
-        System.out.println("Кролик альбинос стоит");
     }
 
     @Override

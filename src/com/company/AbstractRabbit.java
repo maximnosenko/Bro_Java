@@ -6,14 +6,12 @@ public abstract class AbstractRabbit implements InBehavior {
     long BirthTime;
     int ID;
 
-    protected AbstractRabbit() { }
-
+    protected AbstractRabbit() {
+    }
+    abstract void setCoordinates(int x,int y);
     abstract long getTimeBirth();
 
     abstract int getID();
-
-    abstract void go();
-    abstract void stay();
 
     AbstractRabbit(int x,int y,long Birth,int ID)
     {

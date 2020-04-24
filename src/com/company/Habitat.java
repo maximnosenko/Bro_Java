@@ -619,16 +619,16 @@ public class Habitat {
         while (iter.hasNext())
         {
             Map.Entry elem = iter.next();//время это key,value это ID
-            if (((Integer)elem.getValue() > 0 && (Long)elem.getKey() + lifeTimeRabbit <= currentTime)
-                    || ((Integer)elem.getValue() < 0 && (Long)elem.getKey() + lifeTimeAlbino <= currentTime))
+            if (((Integer)elem.getKey()> 0 && (Long)elem.getValue() + lifeTimeRabbit <= currentTime)
+                    || ((Integer)elem.getKey() < 0 && (Long)elem.getValue() + lifeTimeAlbino <= currentTime))
                 toRemove.add(elem);//Удаление во всех трех коллекциях
         }
         for (Map.Entry elem : toRemove)//has next о
         {
             obj.GetMap().remove(elem.getKey());
-            obj.getID().remove(elem.getValue());
+            obj.getID().remove((Integer)elem.getKey());
             for (AbstractRabbit rabbit : obj.GetVector()) {
-                if (rabbit.ID ==(Integer)elem.getValue()) {
+                if (rabbit.ID ==(Integer) elem.getKey()) {
                     obj.GetVector().remove(rabbit);
                     break;
                 }
