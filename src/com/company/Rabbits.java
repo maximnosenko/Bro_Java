@@ -26,6 +26,11 @@ public class Rabbits extends AbstractRabbit{
         return ID;
     }
 
+    void run()
+    {
+
+    }
+
     @Override
     void go() {
         System.out.println("Кролик идет");

@@ -5,17 +5,42 @@ public class ConcreteFactory implements abstractFactory {
     int IDAlbino=-1;
     private Singleton obj=Singleton.getInstance();
 
+    ConcreteFactory() {
+        AbstractBaceAI AI = new AbstractBaceAI() {
+            @Override
+            public void run() {
+                while (going)
+                {
+                    System.out.println("test");
+                    try {
+                        Thread.sleep(500);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        stopped();
+                    }
+                }
+            }
+
+            @Override
+            public void stopped() {
+                going = false;
+            }
+        };
+        new Thread (AI).start();
+    }
+
     @Override
     public void createRabbit(long BirthTime) {
         obj.getID().add(IDRabbit);
-        obj.GetMap().put(BirthTime,IDRabbit);
+        obj.GetMap().put(IDRabbit, BirthTime);
         obj.GetVector().add(new Rabbits((int)(Math.random()*450),(int)(Math.random()*500),BirthTime,IDRabbit++));
     }
 
     @Override
     public void createAlbinoRabbit(long BirthTime) {
         obj.getID().add(IDAlbino);
-        obj.GetMap().put(BirthTime,IDAlbino);
+        obj.GetMap().put(IDAlbino, BirthTime);
         obj.GetVector().add(new albinoRabbit((int)(Math.random()*450),(int)(Math.random()*500),BirthTime,IDAlbino--));
     }
 }
