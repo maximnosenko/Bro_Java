@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 //1.	Обыкновенные кролики двигаются хаотично со скоростью V. Хаотичность достигается случайной сменой направления движения раз в N секунд.
 public class BaceAICommon extends AbstractBaceAI {
    // Singleton obj=Singleton.getInstance();
-    Habitat habitat;
-    int N=1000;
+    int N=200;
     boolean switching=true;
     boolean SwitchForSw=true;
 
-    BaceAICommon() {
+    BaceAICommon(Habitat h) {
+        super(h);
         singleton=Singleton.getInstance();
         V=10;
     }
@@ -20,32 +20,20 @@ public class BaceAICommon extends AbstractBaceAI {
     public void run() {
         while (going) {
            // System.out.println(singleton.GetVector());
-            for (AbstractRabbit rabbit : singleton.GetVector()) {
-                if (rabbit.getID() > 0) {
-                    //System.out.println("Rabbit go1");
-                    //int w=rabbit.getX()
-                    Timer timer=new Timer(N, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent actionEvent) {
-                            if(SwitchForSw)
-                            switching=false;
-                            else
-                                switching=true;
+            synchronized (singleton.GetVector()) {
+                for (AbstractRabbit rabbit : singleton.GetVector()) {
+                    if (rabbit.getID() > 0) {
+                        //System.out.println("Rabbit go1");
+                        //int w=rabbit.getX()
+                        rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), (int) (rabbit.getY() - rabbit.getDirY() * V));
+                        if ((habitat.currentTime - rabbit.getTimeBirth()) % N == 0) {
+                            rabbit.SetDir(Math.random() * 2 - 1, Math.random() * 2 - 1);
                         }
-                    });
-                    timer.start();
-                    if(switching) {
-                        rabbit.setCoordinates((int) (rabbit.getX() - Math.random() * V), (int) (rabbit.getY() - Math.random() * V));
-                        SwitchForSw=true;
-                    }
-                    else {
-                        rabbit.setCoordinates((int) (rabbit.getX() + Math.random() * V), (int) (rabbit.getY() + Math.random() * V));
-                        SwitchForSw=false;
                     }
                 }
             }
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 stopped();
             }

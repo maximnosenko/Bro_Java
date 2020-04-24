@@ -31,6 +31,7 @@ public class Habitat {
     private boolean go=false;//не дает книпоке currentObj продолжить после остановления симуляции
     private ConcreteFactory concrete;
     private JMenuBar menuBar=new JMenuBar();
+    private boolean RabbitsMoving = true;
 
     public Habitat() {
 
@@ -163,7 +164,7 @@ public class Habitat {
         startButton.setBounds(5,5,80,30);
         stopButton.setBounds(90,5,80,30);
 
-        JButton currentObj=new JButton("Current obj");
+        final JButton currentObj=new JButton("Current obj");
         currentObj.setFocusable(false);
         currentObj.addActionListener(new ActionListener() {
             @Override
@@ -285,7 +286,7 @@ public class Habitat {
 
     public void Texti()
     {
-        TextField text=new TextField("400");
+        final TextField text=new TextField("400");
         text.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -312,7 +313,7 @@ public class Habitat {
         panelTwo.add(text);
 
 
-        TextField textTwo=new TextField("500");
+        final TextField textTwo=new TextField("500");
         textTwo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -339,7 +340,7 @@ public class Habitat {
         panelTwo.add(label);
         panelTwo.add(textTwo);
 
-        TextField LifeTextRabbit = new TextField();
+        final TextField LifeTextRabbit = new TextField();
         LifeTextRabbit.setText("1000");
         LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
@@ -364,7 +365,7 @@ public class Habitat {
         panelTwo.add(LifeTextRabbit);
         LifeTextRabbit.setBounds(70,260,120,20);
 
-        TextField LifeTextAlbino=new TextField("10000");
+        final TextField LifeTextAlbino=new TextField("10000");
         LifeTextAlbino.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -469,7 +470,7 @@ public class Habitat {
 
     public void Start()
     {
-        concrete= new ConcreteFactory();
+        concrete= new ConcreteFactory(this);
         if (JustStart)
             JustStart = false;
         mTimer.cancel();
@@ -489,6 +490,7 @@ public class Habitat {
     public void Stop()
     {
         mTimer.cancel();
+        concrete.stopMovement();
         if(bol&&simulate)
             getMessage();
         go=false;
@@ -647,6 +649,11 @@ public class Habitat {
             NumberAlbino++;
         }
         frame.repaint();
+    }
+
+    public int getPanelWidth()
+    {
+        return panel.getWidth();
     }
 
 }

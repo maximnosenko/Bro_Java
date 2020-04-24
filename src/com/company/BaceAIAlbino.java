@@ -1,24 +1,30 @@
 package com.company;
 //2.	Альбиносы двигаются по оси X от одного края области обитания до другого со скоростью V.
 public class BaceAIAlbino extends AbstractBaceAI {
-    BaceAIAlbino()
+    BaceAIAlbino (Habitat h)
     {
-       singleton=Singleton.getInstance();
-       V=15;
+        super(h);
+        singleton=Singleton.getInstance();
+        V=15;
     }
 
     @Override
     public void run() {
         while (going) {
-            for (AbstractRabbit rabbit : singleton.GetVector()) {
-                if (rabbit.getID() < 0) {
-                    //System.out.println("Rabbit go1");
-                    //int w=rabbit.getX()
-                    rabbit.setCoordinates((int) (rabbit.getX() - Math.random() * V), rabbit.getY());
+            synchronized (singleton.GetVector()) {
+                for (AbstractRabbit rabbit : singleton.GetVector()) {
+                    if (rabbit.getID() < 0) {
+                        //System.out.println("Rabbit go1");
+                        //int w=rabbit.getX()
+                        if ((rabbit.getX() + rabbit.getDirX() * V + 50) >= habitat.getPanelWidth()
+                        || (rabbit.getX() + rabbit.getDirX() * V) <= 0)
+                            rabbit.SetDir(-rabbit.getDirX(), 0);
+                        rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), rabbit.getY());
+                    }
                 }
             }
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 stopped();
             }

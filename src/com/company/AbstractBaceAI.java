@@ -6,9 +6,10 @@ public abstract class AbstractBaceAI implements Runnable {//создание п�
     boolean going=true;
     int V=0;
     Singleton singleton=Singleton.getInstance();
+    Habitat habitat;
 
-    AbstractBaceAI(){
-        //myThread.start();
+    AbstractBaceAI(Habitat h){
+        habitat = h;
     }
     public abstract void run();
     //Thread myThread=new Thread(runnable); в мейне классе, где хочешь(такая активация)

@@ -48,12 +48,12 @@ public class Rabbits extends AbstractRabbit{
     }
 
     @Override
-    public int getX() {
+    public synchronized int getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public synchronized int getY() {
         return y;
     }
 }

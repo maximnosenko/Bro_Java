@@ -6,6 +6,8 @@ public class ConcreteFactory implements abstractFactory {
     int IDRabbit=1;
     int IDAlbino=-1;
     private Singleton obj=Singleton.getInstance();
+    BaceAICommon baceAICommon;
+    BaceAIAlbino  baceAIAlbino;
 
     @Override
     public void createRabbit(long BirthTime) {
@@ -14,10 +16,10 @@ public class ConcreteFactory implements abstractFactory {
         obj.GetVector().add(new Rabbits((int)(Math.random()*450),(int)(Math.random()*500),BirthTime,IDRabbit++));
     }
 
-    ConcreteFactory(){
-        BaceAICommon baceAICommon=new BaceAICommon();
-        BaceAIAlbino  baceAIAlbino=new BaceAIAlbino();
-       new Thread(baceAICommon).start();
+    ConcreteFactory(Habitat h){
+        baceAICommon=new BaceAICommon(h);
+        baceAIAlbino=new BaceAIAlbino(h);
+        new Thread(baceAICommon).start();
         new Thread(baceAIAlbino).start();
     }
 
@@ -26,5 +28,11 @@ public class ConcreteFactory implements abstractFactory {
         obj.getID().add(IDAlbino);
         obj.GetMap().put(IDAlbino,BirthTime);
         obj.GetVector().add(new albinoRabbit((int)(Math.random()*450),(int)(Math.random()*500),BirthTime,IDAlbino--));
+    }
+
+    public void stopMovement()
+    {
+        baceAICommon.going = false;
+        baceAIAlbino.going = false;
     }
 }

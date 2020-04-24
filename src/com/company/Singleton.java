@@ -11,7 +11,7 @@ public class Singleton {
     HashMap map=new HashMap();
     private Singleton(){}
 
-    public Vector<AbstractRabbit> GetVector()
+    public synchronized Vector<AbstractRabbit> GetVector()
     {
      return arr;
     }

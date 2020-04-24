@@ -13,6 +13,8 @@ public class albinoRabbit extends AbstractRabbit {
         this.y=y;
         this.BirthTime=Birth;
         this.ID=ID;
+        this.dirX = 1;
+        this.dirY = 0;
     }
 
     @Override
@@ -42,12 +44,12 @@ public class albinoRabbit extends AbstractRabbit {
     }
 
     @Override
-    public int getX() {
+    public synchronized int getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public synchronized int getY() {
         return y;
     }
 }
