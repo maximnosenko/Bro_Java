@@ -18,9 +18,9 @@ public class Habitat {
     private boolean ShowTime=false;
     private boolean simulate=false;
     private boolean JustStart=true;
-    private long currentTime;
+    public long currentTime;
     private JPanel panel,panelTwo;
-    private double N1=400;
+    public double N1=400;
     private double N2=500;
     private int lifeTimeRabbit=1000;
     private int lifeTimeAlbino=10000;
@@ -163,7 +163,7 @@ public class Habitat {
         startButton.setBounds(5,5,80,30);
         stopButton.setBounds(90,5,80,30);
 
-        final JButton currentObj=new JButton("Current obj");
+        JButton currentObj=new JButton("Current obj");
         currentObj.setFocusable(false);
         currentObj.addActionListener(new ActionListener() {
             @Override
@@ -285,7 +285,7 @@ public class Habitat {
 
     public void Texti()
     {
-        final TextField text=new TextField("400");
+        TextField text=new TextField("400");
         text.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -312,7 +312,7 @@ public class Habitat {
         panelTwo.add(text);
 
 
-        final TextField textTwo=new TextField("500");
+        TextField textTwo=new TextField("500");
         textTwo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -339,7 +339,7 @@ public class Habitat {
         panelTwo.add(label);
         panelTwo.add(textTwo);
 
-        final TextField LifeTextRabbit = new TextField();
+        TextField LifeTextRabbit = new TextField();
         LifeTextRabbit.setText("1000");
         LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
@@ -364,7 +364,7 @@ public class Habitat {
         panelTwo.add(LifeTextRabbit);
         LifeTextRabbit.setBounds(70,260,120,20);
 
-        final TextField LifeTextAlbino=new TextField("10000");
+        TextField LifeTextAlbino=new TextField("10000");
         LifeTextAlbino.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -619,18 +619,16 @@ public class Habitat {
         while (iter.hasNext())
         {
             Map.Entry elem = iter.next();//время это key,value это ID
-            if ((Integer)elem.getKey() > 0 && (Long)elem.getValue() + lifeTimeRabbit <= currentTime
-            || (Integer)elem.getKey() < 0 && (Long)elem.getValue() + lifeTimeAlbino <= currentTime)
-            {
+            if (((Integer)elem.getKey()> 0 && (Long)elem.getValue() + lifeTimeRabbit <= currentTime)
+                    || ((Integer)elem.getKey() < 0 && (Long)elem.getValue() + lifeTimeAlbino <= currentTime))
                 toRemove.add(elem);//Удаление во всех трех коллекциях
-            }
         }
         for (Map.Entry elem : toRemove)//has next о
         {
             obj.GetMap().remove(elem.getKey());
-            obj.getID().remove(elem.getKey());
+            obj.getID().remove((Integer)elem.getKey());
             for (AbstractRabbit rabbit : obj.GetVector()) {
-                if (rabbit.ID == (Integer)elem.getKey()) {
+                if (rabbit.ID ==(Integer) elem.getKey()) {
                     obj.GetVector().remove(rabbit);
                     break;
                 }

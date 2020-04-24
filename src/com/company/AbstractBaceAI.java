@@ -4,11 +4,13 @@ import java.lang.Thread;
  Класс должен создавать поток, обеспечивающий движения объектов коллекции;*/
 public abstract class AbstractBaceAI implements Runnable {//создание потоков
     boolean going=true;
-    Habitat parent;
-    Singleton single;
-    AbstractBaceAI(){ }
-    abstract public void run();
+    int V=0;
+    Singleton singleton=Singleton.getInstance();
 
+    AbstractBaceAI(){
+        //myThread.start();
+    }
+    public abstract void run();
     //Thread myThread=new Thread(runnable); в мейне классе, где хочешь(такая активация)
     //myThread.start();
     public abstract void stopped();
