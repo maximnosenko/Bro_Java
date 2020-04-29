@@ -5,6 +5,7 @@ public abstract class AbstractRabbit implements InBehavior {
     int x,y;
     long BirthTime;
     int ID;
+    double dirX=1, dirY=1;
 
     protected AbstractRabbit() {
     }
@@ -12,6 +13,15 @@ public abstract class AbstractRabbit implements InBehavior {
     abstract long getTimeBirth();
 
     abstract int getID();
+
+    void SetDir(double newX, double newY)
+    {
+        this.dirX = newX;
+        this.dirY = newY;
+    }
+
+    public double getDirX() { return dirX; }
+    public double getDirY() { return dirY; }
 
     AbstractRabbit(int x,int y,long Birth,int ID)
     {

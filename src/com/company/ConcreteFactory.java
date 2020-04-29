@@ -11,15 +11,10 @@ public class ConcreteFactory implements abstractFactory {
     public void createRabbit(long BirthTime) {
         obj.getID().add(IDRabbit);
         obj.GetMap().put(IDRabbit,BirthTime);
-        obj.GetVector().add(new Rabbits((int)(Math.random()*450),(int)(Math.random()*500),BirthTime,IDRabbit++));
+        obj.GetVector().add(new Rabbits((int)(Math.random()*550),(int)(Math.random()*500),BirthTime,IDRabbit++));
     }
 
-    ConcreteFactory(){
-        BaceAICommon baceAICommon=new BaceAICommon();
-        BaceAIAlbino  baceAIAlbino=new BaceAIAlbino();
-       new Thread(baceAICommon).start();
-        new Thread(baceAIAlbino).start();
-    }
+
 
     @Override
     public void createAlbinoRabbit(long BirthTime) {

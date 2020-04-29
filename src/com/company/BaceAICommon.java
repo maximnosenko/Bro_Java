@@ -5,13 +5,12 @@ import java.awt.event.ActionListener;
 
 //1.	Обыкновенные кролики двигаются хаотично со скоростью V. Хаотичность достигается случайной сменой направления движения раз в N секунд.
 public class BaceAICommon extends AbstractBaceAI {
-   // Singleton obj=Singleton.getInstance();
-    Habitat habitat;
-    int N=1000;
-    boolean switching=true;
-    boolean SwitchForSw=true;
+    int N=500;
+    boolean bool =false;
+    BaceAICommon(){}
 
-    BaceAICommon() {
+    BaceAICommon(Habitat h) {
+        super(h);
         singleton=Singleton.getInstance();
         V=10;
     }
@@ -19,33 +18,28 @@ public class BaceAICommon extends AbstractBaceAI {
     @Override
     public void run() {
         while (going) {
-           // System.out.println(singleton.GetVector());
-            for (AbstractRabbit rabbit : singleton.GetVector()) {
-                if (rabbit.getID() > 0) {
-                    //System.out.println("Rabbit go1");
-                    //int w=rabbit.getX()
-                    Timer timer=new Timer(N, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent actionEvent) {
-                            if(SwitchForSw)
-                            switching=false;
-                            else
-                                switching=true;
-                        }
-                    });
-                    timer.start();
-                    if(switching) {
-                        rabbit.setCoordinates((int) (rabbit.getX() - Math.random() * V), (int) (rabbit.getY() - Math.random() * V));
-                        SwitchForSw=true;
+            synchronized (singleton.GetVector()) {
+                if (!habitat.ready) {
+                    try {
+                        System.out.println("pirivet2");
+                        singleton.GetVector().wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    else {
-                        rabbit.setCoordinates((int) (rabbit.getX() + Math.random() * V), (int) (rabbit.getY() + Math.random() * V));
-                        SwitchForSw=false;
+                }
+                for (AbstractRabbit rabbit : singleton.GetVector()) {
+                    if (rabbit.getID() > 0) {
+
+                                rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), (int) (rabbit.getY() - rabbit.getDirY() * V));
+                                if ((habitat.currentTime - rabbit.getTimeBirth()) % N == 0) {
+                                    rabbit.SetDir(Math.random() * 2 - 1, Math.random() * 2 - 1);
+                                }
                     }
                 }
             }
+            habitat.frame.repaint();
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 stopped();
             }

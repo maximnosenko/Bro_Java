@@ -1,34 +1,59 @@
 package com.company;
 //2.	Альбиносы двигаются по оси X от одного края области обитания до другого со скоростью V.
 public class BaceAIAlbino extends AbstractBaceAI {
-    BaceAIAlbino()
-    {
-       singleton=Singleton.getInstance();
-       V=15;
-    }
 
+    BaceAIAlbino(Habitat h)
+    {
+        super(h);
+        singleton=Singleton.getInstance();
+        V=10;
+    }
+//this.notify()
+    //радио батн искл
     @Override
-    public void run() {
+    public synchronized void run() {
         while (going) {
-            for (AbstractRabbit rabbit : singleton.GetVector()) {
-                if (rabbit.getID() < 0) {
-                    //System.out.println("Rabbit go1");
-                    //int w=rabbit.getX()
-                    rabbit.setCoordinates((int) (rabbit.getX() - Math.random() * V), rabbit.getY());
+            //synchronized (singleton.GetVector()) {
+                for (AbstractRabbit rabbit : singleton.GetVector()) {
+                    if (rabbit.getID() < 0) {
+                        if (!habitat.readyAlbino) {
+                            try {
+                                System.out.println("pirivet3");
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }else
+                            this.notify();
+
+                        int x = (int)(rabbit.getX() + rabbit.getDirX() * V);
+                        if ((x+50) >=habitat.getPanelWith() || x <= 0) {
+                            rabbit.SetDir(-rabbit.getDirX(), 0);
+                        }
+                        rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), rabbit.getY());
+                    }
                 }
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                stopped();
-            }
+            //}
+            habitat.frame.repaint();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    stopped();
+                }
+
         }
     }
+    public void noti()
+    {
+        synchronized (this)
+        {
+            this.notify();
+        }
+    }
+
 
     @Override
     public void stopped() {
         going=false;
     }
-
-
 }
