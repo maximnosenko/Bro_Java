@@ -7,7 +7,9 @@ import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
 import javax.swing.event.*;
+///Консоль будет запускать одельный поток в пайпет один поток в мейн а другой в читающий
 
+//Id x и y в 4 пункте передачи
 public class Habitat {
     private int NumberRabbits=0;
     private Singleton singleton=Singleton.getInstance();
@@ -26,7 +28,7 @@ public class Habitat {
     private int lifeTimeAlbino=10000;
     private float k= (float) 0.1;
     private double P1=0.3;
-    private long to=0;
+    private long to=0;//используется для resume обновление времни
     private boolean bol=false;
     private boolean go=false;//не дает книпоке currentObj продолжить после остановления симуляции
     private ConcreteFactory concrete;
@@ -45,11 +47,24 @@ public class Habitat {
         frame.add(panelTwo,BorderLayout.EAST);
         frame.setJMenuBar(menuBar);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                System.out.println("ny hello");
+                try {
+                    FileOut();
+                } catch (IOException ex) {
+                    System.out.println("IOException"+ex);
+                }
+            }
+        });
         frame.setSize(900,600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         Keys();
         frame.requestFocus();
+
     }
 
     public void Keys()
@@ -138,6 +153,12 @@ public class Habitat {
         KomboBox();
         Texti();
         Meniu();
+        try {
+            FileIn();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         baceAICommon= new BaceAICommon(this);
         baceAIAlbino=new BaceAIAlbino(this);
         panelTwo.addMouseListener(new MouseAdapter() {
@@ -147,6 +168,54 @@ public class Habitat {
                 frame.requestFocus();
             }
         });
+    }
+
+    public void FileOut() throws IOException {
+
+        BufferedOutputStream fileOutputStream=new BufferedOutputStream(new FileOutputStream("text1.txt"));
+        //String greeting="Hello g";
+        String intervalRabbit=String.valueOf(N1);
+        String intervalAlbino=String.valueOf(N2);
+        String ShowTimeOut=String.valueOf(ShowTime);
+        String simulateOut=String.valueOf(simulate);
+        String lifeRabbit=String.valueOf(lifeTimeRabbit);
+        String lifeAlbino=String.valueOf(lifeTimeAlbino);
+        String kOut=String.valueOf(k);
+        String P1Out=String.valueOf(P1);
+        String toOut=String.valueOf(to);
+        String bolOut=String.valueOf(bol);
+        String goOut=String.valueOf(go);
+        String readyOut=String.valueOf(ready);
+        String readyAlOut=String.valueOf(readyAlbino);
+        String carryover="\n";
+
+        fileOutputStream.write(intervalRabbit.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(intervalAlbino.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(ShowTimeOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(simulateOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(lifeRabbit.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(lifeAlbino.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(kOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(P1Out.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(toOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(bolOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(goOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(readyOut.getBytes());fileOutputStream.write(carryover.getBytes());
+        fileOutputStream.write(readyAlOut.getBytes());
+        fileOutputStream.close();
+    }
+
+    public void FileIn() throws IOException {
+        FileInputStream file=new FileInputStream("text1.txt");
+        BufferedInputStream fileIn=new BufferedInputStream(file,200);
+        int i;
+        //System.out.println(file.readAllBytes());
+        //file.readAllBytes();
+        while ((i=fileIn.read())!=-1){
+            System.out.print((char) i);
+        }
+        System.out.println(ShowTime);
+        //fileIn.close();
     }
 
     public void Buttons() {
@@ -199,10 +268,10 @@ public class Habitat {
         buttonNotify.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                synchronized (singleton.GetVector())
+                synchronized (baceAICommon)
                 {
                     ready=true;
-                    singleton.GetVector().notify();
+                    baceAICommon.notify();
                 }
             }
         });
@@ -224,13 +293,16 @@ public class Habitat {
         buttonNoti.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-               readyAlbino=true;
+                synchronized (baceAIAlbino)
+                {
+                    readyAlbino=true;
+                    baceAIAlbino.notify();
+                }
             }
         });
         panelTwo.add(buttonNoti);
         buttonNoti.setBounds(5,460,100,25);
     }
-
 
     public void chekBox() {//////////////////////////////////////////////////////////
         ButtonGroup currentT=new ButtonGroup();
@@ -571,6 +643,8 @@ public class Habitat {
 
     public void Start()
     {
+        ready=true;
+        readyAlbino=true;
         concrete= new ConcreteFactory();
         new Thread(baceAICommon).start();
         new Thread(baceAIAlbino).start();
@@ -592,8 +666,6 @@ public class Habitat {
 
     public void Stop()
     {
-        //baceAICommon.stopped();
-        //baceAIAlbino.stopped();
         mTimer.cancel();
         if(bol&&simulate)
             getMessage();

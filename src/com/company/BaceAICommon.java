@@ -18,22 +18,24 @@ public class BaceAICommon extends AbstractBaceAI {
     @Override
     public void run() {
         while (going) {
-            synchronized (singleton.GetVector()) {
-                if (!habitat.ready) {
-                    try {
-                        System.out.println("pirivet2");
-                        singleton.GetVector().wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+            synchronized (this) {
+                synchronized (singleton.GetVector()){
                 for (AbstractRabbit rabbit : singleton.GetVector()) {
                     if (rabbit.getID() > 0) {
 
-                                rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), (int) (rabbit.getY() - rabbit.getDirY() * V));
-                                if ((habitat.currentTime - rabbit.getTimeBirth()) % N == 0) {
-                                    rabbit.SetDir(Math.random() * 2 - 1, Math.random() * 2 - 1);
-                                }
+                        rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), (int) (rabbit.getY() - rabbit.getDirY() * V));
+                        if ((habitat.currentTime - rabbit.getTimeBirth()) % N == 0) {
+                            rabbit.SetDir(Math.random() * 2 - 1, Math.random() * 2 - 1);
+                        }
+                    }
+                }
+            }
+                if (!habitat.ready) {
+                    try {
+                        System.out.println("pirivet2");
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }

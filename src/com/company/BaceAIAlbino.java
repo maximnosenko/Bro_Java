@@ -8,32 +8,31 @@ public class BaceAIAlbino extends AbstractBaceAI {
         singleton=Singleton.getInstance();
         V=10;
     }
-//this.notify()
-    //радио батн искл
     @Override
-    public synchronized void run() {
+    public void run() {
         while (going) {
-            //synchronized (singleton.GetVector()) {
-                for (AbstractRabbit rabbit : singleton.GetVector()) {
-                    if (rabbit.getID() < 0) {
-                        if (!habitat.readyAlbino) {
-                            try {
-                                System.out.println("pirivet3");
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }else
-                            this.notify();
+            synchronized (this) {
+                synchronized (singleton.GetVector()) {
+                    for (AbstractRabbit rabbit : singleton.GetVector()) {
+                        if (rabbit.getID() < 0) {
 
-                        int x = (int)(rabbit.getX() + rabbit.getDirX() * V);
-                        if ((x+50) >=habitat.getPanelWith() || x <= 0) {
-                            rabbit.SetDir(-rabbit.getDirX(), 0);
+                            int x = (int) (rabbit.getX() + rabbit.getDirX() * V);
+                            if ((x + 50) >= habitat.getPanelWith() || x <= 0) {
+                                rabbit.SetDir(-rabbit.getDirX(), 0);
+                            }
+                            rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), rabbit.getY());
                         }
-                        rabbit.setCoordinates((int) (rabbit.getX() + rabbit.getDirX() * V), rabbit.getY());
                     }
                 }
-            //}
+                if (!habitat.readyAlbino) {
+                    try {
+                        System.out.println("pirivet3");
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             habitat.frame.repaint();
                 try {
                     Thread.sleep(100);
@@ -43,14 +42,6 @@ public class BaceAIAlbino extends AbstractBaceAI {
 
         }
     }
-    public void noti()
-    {
-        synchronized (this)
-        {
-            this.notify();
-        }
-    }
-
 
     @Override
     public void stopped() {
