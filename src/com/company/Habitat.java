@@ -36,9 +36,8 @@ public class Habitat {
     private JMenuBar menuBar=new JMenuBar();
     private BaceAICommon baceAICommon=null;
     private BaceAIAlbino  baceAIAlbino=null;
-    boolean ready=true;
-    boolean readyAlbino=true;
-    private boolean record=false;
+    public boolean ready=true;
+    public boolean readyAlbino=true;
 
     public Habitat() {
 
@@ -111,11 +110,13 @@ public class Habitat {
                 else {
 
                     if (simulate) {
-                        for (int i = 0; i < singleton.GetVector().size(); i++) {
-                            try {
-                                g.drawImage(singleton.GetVector().get(i).getImage(), singleton.GetVector().get(i).getX(), singleton.GetVector().get(i).getY(), null);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                        synchronized (singleton.GetVector()) {
+                            for (int i = 0; i < singleton.GetVector().size(); i++) {
+                                try {
+                                    g.drawImage(singleton.GetVector().get(i).getImage(), singleton.GetVector().get(i).getX(), singleton.GetVector().get(i).getY(), null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                         if (ShowTime) {
@@ -186,7 +187,6 @@ public class Habitat {
         String kStr=Float.toString(k);
         writer.write(ShowTimeStr+","+bolStr+","+readyStr+","+readyAlStr+","+N1Str+","+N2Str+","+lifeRabbitStr+","+
                 lifeAlbinoStr+","+P1Str+","+kStr);
-        record=true;
         writer.close();
         /*BufferedOutputStream fileOutputStream=new BufferedOutputStream(new FileOutputStream("text1.txt"));
         //String greeting="Hello g";
@@ -223,14 +223,16 @@ public class Habitat {
 
     public void FileIn() throws IOException {
         File file=new File("text1.txt");
+        //FileInputStream reader=new FileInputStream(file);
         FileReader reader=new FileReader(file);
         BufferedReader re=new BufferedReader(reader);
+        //BufferedInputStream re=new BufferedInputStream(reader);
         String line=null;
         while((line=re.readLine())!=null) {
             System.out.println(line);
-            if(record) {
+            //if(record) {
                 splitUp(line);
-            }
+            //}
         }
         System.out.println(ShowTime);
         System.out.println(bol);
@@ -253,8 +255,8 @@ public class Habitat {
         String[] result=line.split(",");
         ShowTime=Boolean.parseBoolean(result[0]);
         bol=Boolean.parseBoolean(result[1]);
-        ready=Boolean.getBoolean(result[2]);
-        readyAlbino=Boolean.getBoolean(result[3]);
+        ready=Boolean.parseBoolean(result[2]);
+        readyAlbino=Boolean.parseBoolean(result[3]);
         N1=Double.parseDouble(result[4]);
         N2=Double.parseDouble(result[5]);
         lifeTimeRabbit=Integer.parseInt(result[6]);
@@ -381,10 +383,16 @@ public class Habitat {
             public void itemStateChanged(ItemEvent itemEvent) {
                 if(bol) {
                     bol = false;
-                }else
-                    bol=true;
+                }else {
+                    bol = true;
+                }
             }
         });
+        if(bol)
+        {
+            boxInformation.setSelected(true);
+        }else
+            boxInformation.setSelected(false);
         boxInformation.setBounds(105,40,90,30);
         boxInformation.setFocusable(false);
         panelTwo.add(boxInformation);
@@ -463,7 +471,7 @@ public class Habitat {
             public void itemStateChanged(ItemEvent itemEvent) {
                 JComboBox box=(JComboBox)itemEvent.getSource();
                 if(box.getSelectedIndex()==0) {
-                   // System.out.println(box);
+                    // System.out.println(box);
                     new Thread(baceAICommon).setPriority(Thread.MAX_PRIORITY);
                 }
                 if(box.getSelectedIndex()==1) {
@@ -569,7 +577,7 @@ public class Habitat {
                         lifeTimeRabbit=Integer.parseInt(LifeTextRabbit.getText());
                     }catch (NumberFormatException ex){
                         getWindowText();
-                      lifeTimeRabbit =1000;
+                        lifeTimeRabbit =1000;
                     }
                     finally {
                         frame.requestFocus();
@@ -594,7 +602,7 @@ public class Habitat {
                         lifeTimeAlbino=Integer.parseInt(LifeTextAlbino.getText());
                     }catch (NumberFormatException ex){
                         getWindowText();
-                       lifeTimeAlbino=10000;
+                        lifeTimeAlbino=10000;
                     }
                     finally {
                         frame.requestFocus();
@@ -688,8 +696,8 @@ public class Habitat {
 
     public void Start()
     {
-        ready=true;
-        readyAlbino=true;
+        System.out.println(ready);
+        System.out.println(readyAlbino);
         concrete= new ConcreteFactory();
         new Thread(baceAICommon).start();
         new Thread(baceAIAlbino).start();
@@ -781,7 +789,7 @@ public class Habitat {
                     if(go) {
                         resume(currentTime);
                     }
-                        dispose();
+                    dispose();
                 }
             });
             setTitle("Window");
