@@ -3,6 +3,7 @@ package com.company;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
@@ -35,8 +36,9 @@ public class Habitat {
     private JMenuBar menuBar=new JMenuBar();
     private BaceAICommon baceAICommon=null;
     private BaceAIAlbino  baceAIAlbino=null;
-     boolean ready=true;
-     boolean readyAlbino=true;
+    boolean ready=true;
+    boolean readyAlbino=true;
+    private boolean record=false;
 
     public Habitat() {
 
@@ -171,8 +173,22 @@ public class Habitat {
     }
 
     public void FileOut() throws IOException {
-
-        BufferedOutputStream fileOutputStream=new BufferedOutputStream(new FileOutputStream("text1.txt"));
+        FileWriter writer=new FileWriter("text1.txt");
+        String ShowTimeStr=Boolean.toString(ShowTime);
+        String bolStr=Boolean.toString(bol);
+        String readyStr=Boolean.toString(ready);
+        String readyAlStr=Boolean.toString(readyAlbino);
+        String N1Str=Double.toString(N1);
+        String N2Str=Double.toString(N2);
+        String lifeRabbitStr=Integer.toString(lifeTimeRabbit);
+        String lifeAlbinoStr=Integer.toString(lifeTimeAlbino);
+        String P1Str=Double.toString(P1);
+        String kStr=Float.toString(k);
+        writer.write(ShowTimeStr+","+bolStr+","+readyStr+","+readyAlStr+","+N1Str+","+N2Str+","+lifeRabbitStr+","+
+                lifeAlbinoStr+","+P1Str+","+kStr);
+        record=true;
+        writer.close();
+        /*BufferedOutputStream fileOutputStream=new BufferedOutputStream(new FileOutputStream("text1.txt"));
         //String greeting="Hello g";
         String intervalRabbit=String.valueOf(N1);
         String intervalAlbino=String.valueOf(N2);
@@ -188,7 +204,7 @@ public class Habitat {
         String readyOut=String.valueOf(ready);
         String readyAlOut=String.valueOf(readyAlbino);
         String carryover="\n";
-
+        fileOutputStream.write((int) N1);
         fileOutputStream.write(intervalRabbit.getBytes());fileOutputStream.write(carryover.getBytes());
         fileOutputStream.write(intervalAlbino.getBytes());fileOutputStream.write(carryover.getBytes());
         fileOutputStream.write(ShowTimeOut.getBytes());fileOutputStream.write(carryover.getBytes());
@@ -202,11 +218,26 @@ public class Habitat {
         fileOutputStream.write(goOut.getBytes());fileOutputStream.write(carryover.getBytes());
         fileOutputStream.write(readyOut.getBytes());fileOutputStream.write(carryover.getBytes());
         fileOutputStream.write(readyAlOut.getBytes());
-        fileOutputStream.close();
+        fileOutputStream.close();*/
     }
 
     public void FileIn() throws IOException {
-        FileInputStream file=new FileInputStream("text1.txt");
+        File file=new File("text1.txt");
+        FileReader reader=new FileReader(file);
+        BufferedReader re=new BufferedReader(reader);
+        String line=null;
+        while((line=re.readLine())!=null) {
+            System.out.println(line);
+            if(record) {
+                splitUp(line);
+            }
+        }
+        System.out.println(ShowTime);
+        System.out.println(bol);
+        System.out.println(N1);
+        re.close();
+        reader.close();
+        /*FileInputStream file=new FileInputStream("text1.txt");
         BufferedInputStream fileIn=new BufferedInputStream(file,200);
         int i;
         //System.out.println(file.readAllBytes());
@@ -215,7 +246,21 @@ public class Habitat {
             System.out.print((char) i);
         }
         System.out.println(ShowTime);
-        //fileIn.close();
+        //fileIn.close();*/
+    }
+
+    public void splitUp(String line){
+        String[] result=line.split(",");
+        ShowTime=Boolean.parseBoolean(result[0]);
+        bol=Boolean.parseBoolean(result[1]);
+        ready=Boolean.getBoolean(result[2]);
+        readyAlbino=Boolean.getBoolean(result[3]);
+        N1=Double.parseDouble(result[4]);
+        N2=Double.parseDouble(result[5]);
+        lifeTimeRabbit=Integer.parseInt(result[6]);
+        lifeTimeAlbino=Integer.parseInt(result[7]);
+        P1=Double.parseDouble(result[8]);
+        k=Float.parseFloat(result[9]);
     }
 
     public void Buttons() {
