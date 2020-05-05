@@ -38,6 +38,8 @@ public class Habitat {
     private BaceAIAlbino  baceAIAlbino=null;
     public boolean ready=true;
     public boolean readyAlbino=true;
+    public boolean starts=true;
+    private PipedReader pr;
 
     public Habitat() {
 
@@ -52,7 +54,6 @@ public class Habitat {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                System.out.println("ny hello");
                 try {
                     FileOut();
                 } catch (IOException ex) {
@@ -188,67 +189,22 @@ public class Habitat {
         writer.write(ShowTimeStr+","+bolStr+","+readyStr+","+readyAlStr+","+N1Str+","+N2Str+","+lifeRabbitStr+","+
                 lifeAlbinoStr+","+P1Str+","+kStr);
         writer.close();
-        /*BufferedOutputStream fileOutputStream=new BufferedOutputStream(new FileOutputStream("text1.txt"));
-        //String greeting="Hello g";
-        String intervalRabbit=String.valueOf(N1);
-        String intervalAlbino=String.valueOf(N2);
-        String ShowTimeOut=String.valueOf(ShowTime);
-        String simulateOut=String.valueOf(simulate);
-        String lifeRabbit=String.valueOf(lifeTimeRabbit);
-        String lifeAlbino=String.valueOf(lifeTimeAlbino);
-        String kOut=String.valueOf(k);
-        String P1Out=String.valueOf(P1);
-        String toOut=String.valueOf(to);
-        String bolOut=String.valueOf(bol);
-        String goOut=String.valueOf(go);
-        String readyOut=String.valueOf(ready);
-        String readyAlOut=String.valueOf(readyAlbino);
-        String carryover="\n";
-        fileOutputStream.write((int) N1);
-        fileOutputStream.write(intervalRabbit.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(intervalAlbino.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(ShowTimeOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(simulateOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(lifeRabbit.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(lifeAlbino.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(kOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(P1Out.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(toOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(bolOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(goOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(readyOut.getBytes());fileOutputStream.write(carryover.getBytes());
-        fileOutputStream.write(readyAlOut.getBytes());
-        fileOutputStream.close();*/
     }
 
     public void FileIn() throws IOException {
         File file=new File("text1.txt");
-        //FileInputStream reader=new FileInputStream(file);
         FileReader reader=new FileReader(file);
         BufferedReader re=new BufferedReader(reader);
-        //BufferedInputStream re=new BufferedInputStream(reader);
         String line=null;
         while((line=re.readLine())!=null) {
             System.out.println(line);
-            //if(record) {
+
                 splitUp(line);
-            //}
+
         }
-        System.out.println(ShowTime);
-        System.out.println(bol);
-        System.out.println(N1);
+
         re.close();
         reader.close();
-        /*FileInputStream file=new FileInputStream("text1.txt");
-        BufferedInputStream fileIn=new BufferedInputStream(file,200);
-        int i;
-        //System.out.println(file.readAllBytes());
-        //file.readAllBytes();
-        while ((i=fileIn.read())!=-1){
-            System.out.print((char) i);
-        }
-        System.out.println(ShowTime);
-        //fileIn.close();*/
     }
 
     public void splitUp(String line){
@@ -617,17 +573,23 @@ public class Habitat {
         LifeTextAlbino.setBounds(70,300,120,20);
     }
 
-    public void Meniu()
+    public void Meniu()//////////////////////////////////////////////////////////////////////////////////////////////////
     {
         JMenu Menu=new JMenu("Menu");
         JMenuItem StopMenu=new JMenuItem("Stop");
         JMenuItem StarMenu=new JMenuItem("Start");
+        JMenuItem save =new JMenuItem("Save");
+        JMenuItem loading =new JMenuItem("loading");
         JRadioButtonMenuItem one=new JRadioButtonMenuItem("on");
         JRadioButtonMenuItem two=new JRadioButtonMenuItem("off");
+        JMenuItem ConsoleMenu = new JMenuItem("Console");
         Menu.add(StarMenu);
         Menu.add(StopMenu);
+        Menu.add(save);
+        Menu.add(loading);
         Menu.add(one);
         Menu.add(two);
+        Menu.add(ConsoleMenu);
 
         StarMenu.addActionListener(new ActionListener() {
             @Override
@@ -640,6 +602,26 @@ public class Habitat {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Stop();
+            }
+        });
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    objSave();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        loading.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    ObjLoading();
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
         one.addActionListener(new ActionListener() {
@@ -656,9 +638,81 @@ public class Habitat {
                 frame.repaint();
             }
         });
+        ConsoleMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+                new ConsoleDialog(singleton);
+                ConsoleDialog cd = new ConsoleDialog();
+                try {
+                    pr=new PipedReader(cd.getStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                new Thread(cd).start();
+                new Thread((Runnable) pr).start();
+                /*Accepts acc;
+                try {
+                    acc=new Accepts(cd.getStream());
+
+                    new Thread(acc).start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+
+            }
+        });
         Menu.setFocusable(false);
         menuBar.setFocusable(false);
         menuBar.add(Menu);
+    }
+
+    public void objSave() throws IOException {//сохраняет
+        FileOutputStream file=new FileOutputStream("myObj.ser");
+        ObjectOutputStream os = new ObjectOutputStream(file);
+
+        for(AbstractRabbit rabbit:singleton.GetVector()) {
+            os.writeObject(rabbit);
+            System.out.println(rabbit);
+        }
+        os.flush();
+        os.close();
+    }
+
+    public void ObjLoading() throws IOException, ClassNotFoundException {
+        JFileChooser fc = new JFileChooser();
+        simulate=false;
+        mTimer.cancel();
+        fc.setCurrentDirectory(new File("myObj.ser"));
+        fc.showOpenDialog(frame);//плохо понимаю как путь к патке задать
+        File selFile = fc.getSelectedFile();
+        FileInputStream file=new FileInputStream(selFile);
+        ObjectInputStream os=new ObjectInputStream(file);
+
+        NumberRabbits=0;
+        currentTime=0;
+        CommonRabbit=0;
+        NumberAlbino=0;
+        starts=false;
+        currentTime=0;
+        singleton.GetVector().clear();
+        singleton.GetMap().clear();
+        singleton.getID().clear();
+        while (true) {
+            try {
+                AbstractRabbit rabbit=(AbstractRabbit) os.readObject();
+                rabbit.BirthTime=0;
+                System.out.println(rabbit);
+                singleton.GetVector().add(rabbit);
+                singleton.getID().add(rabbit.getID());
+                singleton.GetMap().put(rabbit.getID(),rabbit.BirthTime);
+            }catch (IOException e)
+            {
+                os.close();
+                System.out.println("exit");
+                break;
+            }
+        }
     }
 
     private class Updater extends TimerTask{
@@ -704,9 +758,11 @@ public class Habitat {
         if (JustStart)
             JustStart = false;
         mTimer.cancel();
-        singleton.refreshMap();
-        singleton.refreshID();
-        singleton.refreshVector();
+        if(starts) {
+            singleton.refreshMap();
+            singleton.refreshID();
+            singleton.refreshVector();
+        }
         mTimer=new Timer();
         NumberRabbits=0;
         currentTime=0;
@@ -719,6 +775,7 @@ public class Habitat {
 
     public void Stop()
     {
+        starts=true;
         mTimer.cancel();
         if(bol&&simulate)
             getMessage();
@@ -884,5 +941,4 @@ public class Habitat {
     {
         return panel.getWidth();
     }
-
 }
