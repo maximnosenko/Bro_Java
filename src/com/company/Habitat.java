@@ -4,12 +4,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.Socket;
 import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
 import javax.swing.event.*;
-///Консоль будет запускать одельный поток в пайпет один поток в мейн а другой в читающий
+import javax.xml.crypto.Data;
 
+///Консоль будет запускать одельный поток в пайпет один поток в мейн а другой в читающий
 //Id x и y в 4 пункте передачи
 public class Habitat {
     private int NumberRabbits=0;
@@ -39,7 +41,8 @@ public class Habitat {
     public boolean ready=true;
     public boolean readyAlbino=true;
     public boolean starts=true;
-    private PipedReader pr;
+    private ConsoleDialog cd;
+    private Accepts acc=new Accepts(this);
 
     public Habitat() {
 
@@ -66,7 +69,7 @@ public class Habitat {
         frame.setVisible(true);
         Keys();
         frame.requestFocus();
-
+        broadcast();
     }
 
     public void Keys()
@@ -307,7 +310,7 @@ public class Habitat {
         buttonNoti.setBounds(5,460,100,25);
     }
 
-    public void chekBox() {//////////////////////////////////////////////////////////
+    public void chekBox() {
         ButtonGroup currentT=new ButtonGroup();
         JRadioButton on=new JRadioButton("Visible time");
         JRadioButton off=new JRadioButton("Not Visible time",true);
@@ -641,24 +644,11 @@ public class Habitat {
         ConsoleMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
-                new ConsoleDialog(singleton);
-                ConsoleDialog cd = new ConsoleDialog();
-                try {
-                    pr=new PipedReader(cd.getStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                cd = new ConsoleDialog();
+                acc.setPr(cd.getStream());
+                cd.setPr(acc.getStream());
                 new Thread(cd).start();
-                new Thread((Runnable) pr).start();
-                /*Accepts acc;
-                try {
-                    acc=new Accepts(cd.getStream());
-
-                    new Thread(acc).start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+                new Thread(acc).start();
 
             }
         });
@@ -940,5 +930,82 @@ public class Habitat {
     public int getPanelWith()
     {
         return panel.getWidth();
+    }
+
+    public String Execute(String command)
+    {
+        if (command.equals("clear")) {
+            return "";
+        }
+        String[] parts = command.split(" ");
+        if (parts.length == 3 && parts[0].equals("reduce") && parts[1].equals("albino"))
+        {
+            try {
+                int reduce = Integer.parseInt(parts[2]);
+                ReduceAlbino(reduce);
+            }
+            catch (NumberFormatException e)
+            {
+                return "Incorrect parameter for reduce albino command";
+            }
+            return "Albino number is reduced!";
+        }
+        return "Unknown command";
+    }
+
+    public int getCurrentAlbinoNumber()//нужен для различия альбиноса от обычного кролика
+    {
+        int result = 0;
+        for (AbstractRabbit rabbit: singleton.GetVector())
+        {
+            if (rabbit.getID() < 0)
+                result++;
+        }
+        return result;
+    }
+
+    public void ReduceAlbino (int number) {
+        int i = getCurrentAlbinoNumber()*number/100;
+        System.out.println(i);
+        int deleted = 0;
+        Iterator<AbstractRabbit> iter = singleton.GetVector().iterator();
+        while (iter.hasNext())
+        {
+            if (deleted < i)
+            {
+                AbstractRabbit rabbit = iter.next();
+                if (rabbit.getID() < 0)
+                {
+                    singleton.GetMap().remove(rabbit.getID());
+                    singleton.getID().remove(rabbit.getID());
+                    iter.remove();
+                    singleton.GetVector();
+                    singleton.getID();
+                    deleted++;
+                }
+            }
+            else
+                break;
+        }
+    }
+
+    public void broadcast(){
+        try{
+            System.out.println("program is works");
+            Socket client=new Socket("localhost",4004);
+            DataOutputStream data= new DataOutputStream(client.getOutputStream());
+            //data.writeDouble(N1);
+            //data.writeDouble(N2);
+            DataInputStream inputStream = new DataInputStream(client.getInputStream());
+            int d=inputStream.read();
+            int n=inputStream.read();
+            System.out.println("Number "+d+"Key "+n);
+            inputStream.close();
+            data.close();
+            client.close();
+        }catch (IOException e){
+            e.printStackTrace();
+            //System.err.println(e);
+        }
     }
 }
