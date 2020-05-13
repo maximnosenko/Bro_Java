@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="TCP-server:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5032ce64-6473-472d-9e51-209e5dde6ddd" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +24,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Labi" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -51,21 +62,67 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1042" height="208" key="GridCell.Tab.0.bottom" timestamp="1589285796652">
+    <state x="749" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1589289373308">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1042" height="208" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589285796652" />
-    <state width="1042" height="208" key="GridCell.Tab.0.center" timestamp="1589285796652">
+    <state x="749" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1589289373308" />
+    <state x="816" y="190" key="FileChooserDialogImpl" timestamp="1589304947281">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1042" height="208" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589285796652" />
-    <state width="1042" height="208" key="GridCell.Tab.0.left" timestamp="1589285796652">
+    <state x="816" y="190" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1589304947281" />
+    <state width="1042" height="161" key="GridCell.Tab.0.bottom" timestamp="1589373720515">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1042" height="208" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589285796652" />
-    <state width="1042" height="208" key="GridCell.Tab.0.right" timestamp="1589285796652">
+    <state width="1042" height="161" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589373720515" />
+    <state width="1042" height="161" key="GridCell.Tab.0.center" timestamp="1589373720515">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1042" height="208" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589285796652" />
+    <state width="1042" height="161" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589373720515" />
+    <state width="1042" height="161" key="GridCell.Tab.0.left" timestamp="1589373720515">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1042" height="161" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589373720514" />
+    <state width="1042" height="161" key="GridCell.Tab.0.right" timestamp="1589373720515">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1042" height="161" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589373720515" />
+    <state width="1042" height="258" key="GridCell.Tab.1.bottom" timestamp="1589304541341">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1042" height="258" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589304541341" />
+    <state width="1042" height="258" key="GridCell.Tab.1.center" timestamp="1589304541341">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1042" height="258" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1589304541341" />
+    <state width="1042" height="258" key="GridCell.Tab.1.left" timestamp="1589304541341">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1042" height="258" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1589304541341" />
+    <state width="1042" height="258" key="GridCell.Tab.1.right" timestamp="1589304541341">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1042" height="258" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1589304541341" />
+    <state x="498" y="0" key="SettingsEditor" timestamp="1589289943026">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="498" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1589289943026" />
+    <state x="751" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1589293307220">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="751" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1589293307220" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/Server.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/TCP_server$Main.ic" NAME="Main Coverage Results" MODIFIED="1589297525552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

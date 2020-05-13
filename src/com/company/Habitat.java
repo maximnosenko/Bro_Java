@@ -43,10 +43,14 @@ public class Habitat {
     public boolean starts=true;
     private ConsoleDialog cd;
     private Accepts acc=new Accepts(this);
+    private Socket client;
+    private DataInputStream inputStream;
+    private boolean close=false;
 
     public Habitat() {
 
         Panel();
+        broadcast();
         panelTwo.setLayout(null);
         frame=new JFrame("Window");
         frame.add(panel,BorderLayout.CENTER);
@@ -59,6 +63,14 @@ public class Habitat {
                 super.windowClosing(e);
                 try {
                     FileOut();
+                    if(close) {
+                        DataOutputStream data = new DataOutputStream(client.getOutputStream());
+                        data.writeInt(-1);
+                        client.close();
+                        inputStream.close();
+                        data.close();
+                        close=false;
+                    }
                 } catch (IOException ex) {
                     System.out.println("IOException"+ex);
                 }
@@ -69,7 +81,7 @@ public class Habitat {
         frame.setVisible(true);
         Keys();
         frame.requestFocus();
-        broadcast();
+
     }
 
     public void Keys()
@@ -155,6 +167,7 @@ public class Habitat {
 
         panelTwo=new JPanel();
         Buttons();
+
         chekBox();
         listertr();
         KomboBox();
@@ -414,7 +427,8 @@ public class Habitat {
                 System.out.println(P1);
             }
         });
-        cbProbability.setRequestFocusEnabled(false);
+        cbProbability.setFocusable(false);
+       // cbProbability.setRequestFocusEnabled(false);
         JLabel labelCb=new JLabel("Probability rabbit");
         labelCb.setBounds(70,110,100,20);
         cbProbability.setBounds(70,130,80,30);
@@ -576,7 +590,7 @@ public class Habitat {
         LifeTextAlbino.setBounds(70,300,120,20);
     }
 
-    public void Meniu()//////////////////////////////////////////////////////////////////////////////////////////////////
+    public void Meniu()
     {
         JMenu Menu=new JMenu("Menu");
         JMenuItem StopMenu=new JMenuItem("Stop");
@@ -990,20 +1004,47 @@ public class Habitat {
     }
 
     public void broadcast(){
+        //Vector vector=new Vector();
         try{
             System.out.println("program is works");
-            Socket client=new Socket("localhost",4004);
-            DataOutputStream data= new DataOutputStream(client.getOutputStream());
-            //data.writeDouble(N1);
+            client=new Socket("localhost",48655);
+            close=true;
+            //DataOutputStream data= new DataOutputStream(client.getOutputStream());
+            //data.writeInt(-1);
             //data.writeDouble(N2);
-            DataInputStream inputStream = new DataInputStream(client.getInputStream());
-            int d=inputStream.read();
-            int n=inputStream.read();
-            System.out.println("Number "+d+"Key "+n);
-            inputStream.close();
-            data.close();
-            client.close();
-        }catch (IOException e){
+            JComboBox TCPbox=new JComboBox();
+            inputStream = new DataInputStream(client.getInputStream());
+            int size=inputStream.readInt();
+            for(int i=0;i<size;i++)
+            {
+                int port=inputStream.readInt();
+                System.out.println(port);
+                TCPbox.addItem(port);
+                //Vector.add(port);
+            }
+            TCPbox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent itemEvent) {
+
+                }
+            });
+            TCPbox.setFocusable(false);
+            JLabel TCPlable=new JLabel("Clients");
+            TCPbox.setBounds(5,500,120,25);
+            TCPlable.setBounds(10,480,80,25);
+            panelTwo.add(TCPlable);
+            panelTwo.add(TCPbox);
+
+            //int n=inputStream.read();
+            //System.out.println("Number "+d+"Key "+n);
+           // inputStream.close();
+        }
+        catch (IOException e){
+
+            //data.close();
+                //inputStream.close();
+               // client.close();
+
             e.printStackTrace();
             //System.err.println(e);
         }
