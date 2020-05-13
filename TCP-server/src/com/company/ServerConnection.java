@@ -9,9 +9,9 @@ public class ServerConnection extends Thread {
     private Socket socket;
     private DataInputStream inStream;
     private DataOutputStream outStream;
-    Singleton singleton;
+    Singleton singleton = Singleton.getInstance();
     //private Server server;
-    public ServerConnection(Socket sok,Singleton sing)
+    public ServerConnection(Socket sok)
     {
         socket=sok;
         singleton.getMap().put(getPort(),this);
@@ -28,6 +28,8 @@ public class ServerConnection extends Thread {
              {
                  singleton.getMap().remove(getPort(),this);
              }
+             socket.close();
+             Update();
             //outStream.write(server.getHasMap());
             //Update();
             //inStream.close();

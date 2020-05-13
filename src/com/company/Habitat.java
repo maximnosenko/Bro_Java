@@ -43,9 +43,8 @@ public class Habitat {
     public boolean starts=true;
     private ConsoleDialog cd;
     private Accepts acc=new Accepts(this);
-    private Socket client;
-    private DataInputStream inputStream;
     private boolean close=false;
+    private Connection connection;
 
     public Habitat() {
 
@@ -64,11 +63,7 @@ public class Habitat {
                 try {
                     FileOut();
                     if(close) {
-                        DataOutputStream data = new DataOutputStream(client.getOutputStream());
-                        data.writeInt(-1);
-                        client.close();
-                        inputStream.close();
-                        data.close();
+                        connection.CloseConnection();
                         close=false;
                     }
                 } catch (IOException ex) {
@@ -1003,50 +998,23 @@ public class Habitat {
         }
     }
 
+    JComboBox TCPbox = new JComboBox();
     public void broadcast(){
-        //Vector vector=new Vector();
-        try{
-            System.out.println("program is works");
-            client=new Socket("localhost",48655);
-            close=true;
-            //DataOutputStream data= new DataOutputStream(client.getOutputStream());
-            //data.writeInt(-1);
-            //data.writeDouble(N2);
-            JComboBox TCPbox=new JComboBox();
-            inputStream = new DataInputStream(client.getInputStream());
-            int size=inputStream.readInt();
-            for(int i=0;i<size;i++)
-            {
-                int port=inputStream.readInt();
-                System.out.println(port);
-                TCPbox.addItem(port);
-                //Vector.add(port);
+        TCPbox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+
             }
-            TCPbox.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent itemEvent) {
+        });
+        close = true;
+        TCPbox.setFocusable(false);
+        JLabel TCPlable = new JLabel("Clients");
+        TCPbox.setBounds(5, 500, 120, 25);
+        TCPlable.setBounds(10, 480, 80, 25);
+        panelTwo.add(TCPlable);
+        panelTwo.add(TCPbox);
 
-                }
-            });
-            TCPbox.setFocusable(false);
-            JLabel TCPlable=new JLabel("Clients");
-            TCPbox.setBounds(5,500,120,25);
-            TCPlable.setBounds(10,480,80,25);
-            panelTwo.add(TCPlable);
-            panelTwo.add(TCPbox);
-
-            //int n=inputStream.read();
-            //System.out.println("Number "+d+"Key "+n);
-           // inputStream.close();
-        }
-        catch (IOException e){
-
-            //data.close();
-                //inputStream.close();
-               // client.close();
-
-            e.printStackTrace();
-            //System.err.println(e);
-        }
+        connection = new Connection(this);
+        new Thread(connection).start();
     }
 }

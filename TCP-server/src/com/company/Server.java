@@ -14,7 +14,7 @@ public class Server {
         try {
             System.out.println("System works");
             while (true) {
-                new ServerConnection(serverSock.accept(),singleton);
+                new ServerConnection(serverSock.accept());
                 //Update();
             }
         }
