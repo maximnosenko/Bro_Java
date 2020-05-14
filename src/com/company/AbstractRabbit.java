@@ -1,24 +1,35 @@
 package com.company;
 
-public abstract class AbstractRabbit implements InBehavior {
+import java.io.Serializable;
+
+public abstract class AbstractRabbit implements InBehavior, Serializable {
 
     int x,y;
     long BirthTime;
-    int id;
+    int ID;
+    double dirX=1, dirY=1;
 
     protected AbstractRabbit() {
     }
-
+    abstract void setCoordinates(int x,int y);
     abstract long getTimeBirth();
 
-    abstract int getId();
+    abstract int getID();
 
-    abstract void go();
-    abstract void stay();
+    void SetDir(double newX, double newY)
+    {
+        this.dirX = newX;
+        this.dirY = newY;
+    }
 
-    AbstractRabbit(int x,int y)
+    public double getDirX() { return dirX; }
+    public double getDirY() { return dirY; }
+
+    AbstractRabbit(int x,int y,long Birth,int ID)
     {
         this.x=x;
         this.y=y;
+        this.BirthTime=Birth;
+        this.ID=ID;
     }
 }

@@ -1,16 +1,14 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Vector;
-import java.util.TreeSet;
 import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.Vector;
 
 public class Singleton {
     Vector<AbstractRabbit> arr=new Vector();
-    TreeSet ids = new TreeSet();
-    HashMap<Long, Integer> BirthTimes = new HashMap();
     private static Singleton instance;
-
+    public TreeSet IDs=new TreeSet();
+    HashMap map=new HashMap();
     private Singleton(){}
 
     public Vector<AbstractRabbit> GetVector()
@@ -18,17 +16,25 @@ public class Singleton {
      return arr;
     }
 
-    public void refreshVector(){
+    public void refreshVector() {
         arr.clear();
     }
 
-    public TreeSet GetIds() { return ids; }
+    public TreeSet getID(){
+        return IDs;
+    }
 
-    public void refreshIds() { ids.clear(); }
+    public void refreshID() {
+        IDs.clear();
+    }
 
-    public HashMap GetBirthTimes() { return BirthTimes; }
+    public HashMap GetMap() {
+        return map;
+    }
 
-    public void refreshBirthTimes() { BirthTimes.clear(); }
+    public void refreshMap(){
+        map.clear();
+    }
 
     public static Singleton getInstance()
     {

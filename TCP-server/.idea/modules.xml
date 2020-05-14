@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Labi.iml" filepath="$PROJECT_DIR$/Labi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TCP-server.iml" filepath="$PROJECT_DIR$/TCP-server.iml" />
     </modules>
   </component>
 </project>

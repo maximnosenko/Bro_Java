@@ -3,16 +3,24 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Rabbits extends AbstractRabbit{
+public class Rabbits extends AbstractRabbit {
 
-    private BufferedImage image;
+    private transient BufferedImage image;
+    //int BirthTime;
 
-    Rabbits(int x, int y,long Birth,int newid) {
+    Rabbits(int x, int y,long Birth,int ID) {
         this.x=x;
         this.y=y;
         this.BirthTime=Birth;
-        this.id=newid;
+        this.ID=ID;
+    }
+
+    @Override
+    void setCoordinates(int x,int y) {
+        this.x=x;
+        this.y=y;
     }
 
     @Override
@@ -21,18 +29,8 @@ public class Rabbits extends AbstractRabbit{
     }
 
     @Override
-    int getId() {
-        return id;
-    }
-
-    @Override
-    void go() {
-        System.out.println("Кролик идет");
-    }
-
-    @Override
-    void stay() {
-        System.out.println("Кролик стоит");
+    int getID() {
+        return ID;
     }
 
     @Override
@@ -54,5 +52,4 @@ public class Rabbits extends AbstractRabbit{
     public int getY() {
         return y;
     }
-
 }

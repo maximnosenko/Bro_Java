@@ -3,16 +3,26 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 public class albinoRabbit extends AbstractRabbit {
 
-    private BufferedImage image;
+    private transient BufferedImage image;
+    //private BufferedImage
 
-    albinoRabbit(int x, int y,long Birth,int newid) {
+    albinoRabbit(int x, int y,long Birth,int ID) {
         this.x=x;
         this.y=y;
         this.BirthTime=Birth;
-        this.id=newid;
+        this.ID=ID;
+        this.dirX = 1;
+        this.dirY = 0;
+    }
+
+    @Override
+    void setCoordinates(int x,int y) {
+        this.x=x;
+        this.y=y;
     }
 
     @Override
@@ -21,18 +31,8 @@ public class albinoRabbit extends AbstractRabbit {
     }
 
     @Override
-    int getId() {
-        return id;
-    }
-
-    @Override
-    void go() {
-        System.out.println("Кролик альбинос идет");
-    }
-
-    @Override
-    void stay() {
-        System.out.println("Кролик альбинос стоит");
+    int getID() {
+        return ID;
     }
 
     @Override
