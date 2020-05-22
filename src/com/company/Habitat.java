@@ -3,13 +3,11 @@ package com.company;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.Socket;
 import java.util.*;
 import java.util.Timer;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.xml.crypto.Data;
 
 ///Консоль будет запускать одельный поток в пайпет один поток в мейн а другой в читающий
 //Id x и y в 4 пункте передачи
@@ -20,17 +18,17 @@ public class Habitat {
     private Timer mTimer = new Timer();
     private int NumberAlbino;
     private int CommonRabbit;
-    private boolean ShowTime=false;
+     boolean ShowTime=false;
     private boolean simulate=false;
     private boolean JustStart=true;
     public long currentTime;
     private JPanel panel,panelTwo;
-    public double N1=400;
-    public double N2=500;
-    private int lifeTimeRabbit=1000;
-    private int lifeTimeAlbino=10000;
-    private float k= (float) 0.1;
-    private double P1=0.3;
+     double N1=400;
+     double N2=500;
+     int lifeTimeRabbit=1000;
+     int lifeTimeAlbino=10000;
+     float k= (float) 0.1;
+     double P1=0.3;
     private long to=0;//используется для resume обновление времни
     private boolean bol=false;
     private boolean go=false;//не дает книпоке currentObj продолжить после остановления симуляции
@@ -45,11 +43,13 @@ public class Habitat {
     private Accepts acc=new Accepts(this);
     private Socket client;
     private DataInputStream inputStream;
-    private boolean close=false;
+    //private boolean close=false;
+    private SQLConnection SQLconnection= SQLConnection.getInstance();
     JComboBox TCPbox=new JComboBox();
     private Connection connection;
+    private int Type=-1;
 
-    public Habitat() {
+    public Habitat(){
 
         Panel();
         broadcast();
@@ -65,12 +65,13 @@ public class Habitat {
                 super.windowClosing(e);
                 try {
                     FileOut();
-                    if(close) {
+                    if(connection.running) {
                         connection.CloseConnection();
                         //client.close();
 //                        inputStream.close();
                         //data.close();
-                        close=false;
+                        //close=false;
+                        connection.running=false;
                     }
                 } catch (IOException ex) {
                     System.out.println("IOException"+ex);
@@ -167,19 +168,17 @@ public class Habitat {
         });
 
         panelTwo=new JPanel();
-        Buttons();
-
-        chekBox();
-        listertr();
-        KomboBox();
-        Texti();
-        Meniu();
         try {
             FileIn();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        Buttons();
+        chekBox();
+        listertr();
+        KomboBox();
+        Texti();
+        Meniu();
         baceAICommon= new BaceAICommon(this);
         baceAIAlbino=new BaceAIAlbino(this);
         panelTwo.addMouseListener(new MouseAdapter() {
@@ -215,9 +214,7 @@ public class Habitat {
         String line=null;
         while((line=re.readLine())!=null) {
             System.out.println(line);
-
                 splitUp(line);
-
         }
 
         re.close();
@@ -387,6 +384,7 @@ public class Habitat {
         obj.add("90%");
         obj.add("100%");
         Present.setListData(obj);
+        Present.setSelectedIndex((int) (k*10));
         Present.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
@@ -397,7 +395,6 @@ public class Habitat {
         });
         Present.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JLabel labelPercent=new JLabel("Percent Albino");
-        Present.setSelectedIndex(1);
         Present.setRequestFocusEnabled(false);
         labelPercent.setBounds(5,110,70,25);
         Present.setBounds(5,130,35,200);
@@ -419,7 +416,7 @@ public class Habitat {
         cbProbability.addItem("0.8");
         cbProbability.addItem("0.9");
         cbProbability.addItem("1.0");
-        cbProbability.setSelectedIndex(3);
+        cbProbability.setSelectedIndex((int)(P1*10));
         cbProbability.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
@@ -486,7 +483,8 @@ public class Habitat {
 
     public void Texti()
     {
-        TextField text=new TextField("400");
+        String strN1=Double.toString(N1);
+        TextField text=new TextField(strN1);
         text.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -512,8 +510,8 @@ public class Habitat {
         panelTwo.add(labelRabbit);
         panelTwo.add(text);
 
-
-        TextField textTwo=new TextField("500");
+        String strN2=Double.toString(N2);
+        TextField textTwo=new TextField(strN2);
         textTwo.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -540,8 +538,9 @@ public class Habitat {
         panelTwo.add(label);
         panelTwo.add(textTwo);
 
+        String strLifeRabbit=Integer.toString(lifeTimeRabbit);
         TextField LifeTextRabbit = new TextField();
-        LifeTextRabbit.setText("1000");
+        LifeTextRabbit.setText(strLifeRabbit);
         LifeTextRabbit.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -565,7 +564,8 @@ public class Habitat {
         panelTwo.add(LifeTextRabbit);
         LifeTextRabbit.setBounds(70,260,120,20);
 
-        TextField LifeTextAlbino=new TextField("10000");
+        String strLifeAlbino=Integer.toString(lifeTimeAlbino);
+        TextField LifeTextAlbino=new TextField(strLifeAlbino);
         LifeTextAlbino.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -598,6 +598,7 @@ public class Habitat {
         JMenuItem StarMenu=new JMenuItem("Start");
         JMenuItem save =new JMenuItem("Save");
         JMenuItem loading =new JMenuItem("loading");
+        ButtonGroup onAndOff=new ButtonGroup();
         JRadioButtonMenuItem one=new JRadioButtonMenuItem("on");
         JRadioButtonMenuItem two=new JRadioButtonMenuItem("off");
         JMenuItem ConsoleMenu = new JMenuItem("Console");
@@ -605,6 +606,8 @@ public class Habitat {
         Menu.add(StopMenu);
         Menu.add(save);
         Menu.add(loading);
+        onAndOff.add(one);
+        onAndOff.add(two);
         Menu.add(one);
         Menu.add(two);
         Menu.add(ConsoleMenu);
@@ -670,9 +673,70 @@ public class Habitat {
         Menu.setFocusable(false);
         menuBar.setFocusable(false);
         menuBar.add(Menu);
+
+        JMenu menuSQL=new JMenu("SQL");
+        JMenuItem Keep=new JMenuItem("Save");
+        JMenuItem load=new JMenuItem("loading");
+        JRadioButtonMenuItem ordinary= new JRadioButtonMenuItem("ordinary rabbits");
+        JRadioButtonMenuItem albino =new JRadioButtonMenuItem("albino rabbits");
+        JRadioButtonMenuItem ollRabbits=new JRadioButtonMenuItem("oll rabbits",true);
+        ButtonGroup rabbitsGroup=new ButtonGroup();
+        menuSQL.add(Keep);
+        menuSQL.add(load);
+        rabbitsGroup.add(ollRabbits);
+        rabbitsGroup.add(ordinary);
+        rabbitsGroup.add(albino);
+        menuSQL.add(ordinary);
+        menuSQL.add(albino);
+        menuSQL.add(ollRabbits);
+
+        ollRabbits.setFocusable(false);
+        ordinary.setFocusable(false);
+        albino.setFocusable(false);
+        Keep.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+           SQLconnection.setData(Type);// 0 обычные кролики, 1 альбиносы,-1 все
+           System.out.println(singleton.GetVector());
+            }
+        });
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                NumberRabbits=0;
+                currentTime=0;
+                CommonRabbit=0;
+                NumberAlbino=0;
+                starts=false;
+                singleton.GetVector().clear();
+                singleton.GetMap().clear();
+                singleton.getID().clear();
+                SQLconnection.Data(Type);
+            }
+        });
+        ollRabbits.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Type=-1;
+            }
+        });
+        ordinary.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Type=0;
+            }
+        });
+        albino.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Type=1;
+            }
+        });
+        menuSQL.setFocusable(false);
+        menuBar.add(menuSQL);
     }
 
-    public void objSave() throws IOException {//сохраняет
+    public void objSave() throws IOException {
         FileOutputStream file=new FileOutputStream("myObj.ser");
         ObjectOutputStream os = new ObjectOutputStream(file);
 
@@ -689,7 +753,7 @@ public class Habitat {
         simulate=false;
         mTimer.cancel();
         fc.setCurrentDirectory(new File("myObj.ser"));
-        fc.showOpenDialog(frame);//плохо понимаю как путь к патке задать
+        fc.showOpenDialog(frame);
         File selFile = fc.getSelectedFile();
         FileInputStream file=new FileInputStream(selFile);
         ObjectInputStream os=new ObjectInputStream(file);
@@ -1012,13 +1076,8 @@ public class Habitat {
                     connection.broadcastTread();
                     System.out.println(N1);
                 }
-               // connection.broadcastTread();
-                //TCPbox.getSelectedIndex();
-                //System.out.println(N1);
             }
         });
-
-                close=true;
                 TCPbox.setFocusable(false);
                 TCPbox.setFocusTraversalPolicyProvider(false);
                 JLabel TCPlable = new JLabel("Clients");
@@ -1030,4 +1089,5 @@ public class Habitat {
                 connection=new Connection(this);
                 new Thread(connection).start();
     }
+
 }
