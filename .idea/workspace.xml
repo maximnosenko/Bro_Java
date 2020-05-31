@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="Labi:jar" />
-    </artifacts-to-build>
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="2dc91df6-c6cf-45d9-be9d-a1f92dad6620" name="Default Changelist" comment="" />
+    <list default="true" id="b5c09623-c260-4e86-90c6-2875489e462f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,41 +15,20 @@
       </list>
     </option>
   </component>
-  <component name="ProjectId" id="1YOINc2BjpGC2oaG5s8ai35ib6i" />
+  <component name="ProjectId" id="1aUC2Ul9PVI1c7CJbpioSBobysS" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="create.test.in.the.same.root" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/SQLite" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Ivan\IdeaProjects\Labi\db" />
-      <recent name="C:\Users\Ivan\IdeaProjects\Labi\lib" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.company" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Ivan\IdeaProjects\Labi\src\com\company" />
-    </key>
-  </component>
-  <component name="RunAnythingCache">
-    <option name="myCommands">
-      <command value="2" />
-    </option>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Labi" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.company.Main" />
-      <module name="Labi" />
+      <module name="Курсовая работа" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -73,159 +47,86 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2dc91df6-c6cf-45d9-be9d-a1f92dad6620" name="Default Changelist" comment="" />
-      <created>1582807174945</created>
+      <changelist id="b5c09623-c260-4e86-90c6-2875489e462f" name="Default Changelist" comment="" />
+      <created>1586780578594</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1582807174945</updated>
+      <updated>1586780578594</updated>
     </task>
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="361" y="71" key="#Inspections" timestamp="1588349910054">
+    <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser" timestamp="1590919042088">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="71" key="#Inspections/0.0.1536.824@0.0.1536.824" timestamp="1588349910054" />
-    <state x="361" y="71" key="#Project_Structure" timestamp="1585339313285">
+    <state x="574" y="122" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1590919042088" />
+    <state x="566" y="297" width="403" height="236" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1590855731409">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="71" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1585339313285" />
-    <state x="534" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588349893683">
+    <state x="566" y="297" width="403" height="236" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1590855731409" />
+    <state x="442" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1590855665646">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="534" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1588349893683" />
-    <state x="589" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1590089917058">
+    <state x="442" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1590855665646" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590694163140">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="589" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1590089917058" />
-    <state x="546" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1589216920265">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1590694163140" />
+    <state x="528" y="283" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1590694144635">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="546" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1589216920265" />
-    <state x="566" y="297" width="403" height="236" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1589222061917">
+    <state x="528" y="283" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824@0.0.1536.824" timestamp="1590694144635" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1590917919517">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="566" y="297" width="403" height="236" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1589222061917" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587144999567">
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590917919517" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1590928279940">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1587144999567" />
-    <state x="518" y="157" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1590088776514">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590928279940" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1590928279940">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="518" y="157" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/0.0.1536.824@0.0.1536.824" timestamp="1590088776514" />
-    <state width="388" height="466" key="DebuggerActiveHint" timestamp="1585068055030">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590928279940" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1590928279940">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="388" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1585068055030" />
-    <state x="334" y="165" key="DetectedRootsChooserDialog" timestamp="1590146480134">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590928279940" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1590928279940">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="334" y="165" key="DetectedRootsChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1590146480134" />
-    <state x="135" y="120" width="1304" height="580" key="DiffContextDialog" timestamp="1584691637365">
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590928279940" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1590927439581">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="135" y="120" width="1304" height="580" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1584691637365" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1590146542933">
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590927439581" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1590927439581">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590146542933" />
-    <state width="1266" height="187" key="GridCell.Tab.0.bottom" timestamp="1590146559570">
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1590927439581" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1590927439581">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1266" height="187" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590146559570" />
-    <state width="1266" height="187" key="GridCell.Tab.0.center" timestamp="1590146559570">
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1590927439581" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1590927439581">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1266" height="187" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590146559570" />
-    <state width="1266" height="187" key="GridCell.Tab.0.left" timestamp="1590146559570">
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1590927439581" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1590764320870">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1266" height="187" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590146559570" />
-    <state width="1266" height="187" key="GridCell.Tab.0.right" timestamp="1590146559570">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590764320870" />
+    <state x="511" y="41" key="refactoring.ChangeSignatureDialog" timestamp="1590847219877">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1266" height="187" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590146559570" />
-    <state width="1266" height="254" key="GridCell.Tab.1.bottom" timestamp="1590138298631">
+    <state x="511" y="41" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1590847219877" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1590772983279">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1266" height="254" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590138298631" />
-    <state width="1266" height="254" key="GridCell.Tab.1.center" timestamp="1590138298631">
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1590772983279" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1590850852033">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1266" height="254" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1590138298631" />
-    <state width="1266" height="254" key="GridCell.Tab.1.left" timestamp="1590138298630">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1266" height="254" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1590138298630" />
-    <state width="1266" height="254" key="GridCell.Tab.1.right" timestamp="1590138298631">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1266" height="254" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1590138298631" />
-    <state x="53" y="0" key="SettingsEditor" timestamp="1590146549663">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="53" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1590146549663" />
-    <state x="480" y="290" key="com.intellij.ide.util.TipDialog" timestamp="1589871874813">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="480" y="290" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1589871874813" />
-    <state x="558" y="117" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1584686447197">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="558" y="117" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1536.824@0.0.1536.824" timestamp="1584686447197" />
-    <state x="209" y="33" key="new project wizard" timestamp="1589178035809">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="209" y="33" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1589178035809" />
-    <state x="520" y="42" key="refactoring.ChangeSignatureDialog" timestamp="1587766283062">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="520" y="42" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1587766283062" />
-    <state x="426" y="186" width="672" height="677" key="run.anything.popup" timestamp="1590091058000">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="426" y="186" width="672" height="677" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1590091058000" />
-    <state x="425" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1590126667548">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="425" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590126667548" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/com/company/Connection.java</url>
-          <line>59</line>
-          <properties class="com.company.Connection">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/company/SQLConnection.java</url>
-          <line>45</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/company/Habitat.java</url>
-          <line>698</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/company/SQLConnection.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/company/SQLConnection.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Labi$Main.ic" NAME="Main Coverage Results" MODIFIED="1589864781931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590850852033" />
   </component>
 </project>
